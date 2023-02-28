@@ -1,0 +1,18 @@
+[
+  {
+    "CustomerId": 1,
+    "BarberId": 2,
+    "ItemId": null,
+    "isPaid": false,
+    "cutRating": 2,
+    "totalPrice": 25000
+  },
+  {
+    "CustomerId": 2,
+    "BarberId": 1,
+    "ItemId": 2,
+    "isPaid": true,
+    "cutRating": 5,
+    "totalPrice": 85000
+  }
+]
