@@ -13,6 +13,7 @@ module.exports = (sequelize, DataTypes) => {
       CustomerId: DataTypes.INTEGER,
       BarberId: DataTypes.INTEGER,
       isPaid: DataTypes.BOOLEAN,
+      status: DataTypes.STRING,
       cutRating: DataTypes.INTEGER,
       totalPrice: {
         type: DataTypes.BIGINT,
