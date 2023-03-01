@@ -4,8 +4,8 @@ const { hash } = require("../helpers/bcrypt");
 module.exports = (sequelize, DataTypes) => {
   class Barber extends Model {
     static associate(models) {
-      Customer.hasMany(models.Transaction, { onDelete: "cascade", onUpdate: "cascade", hooks: true });
-      Customer.hasMany(models.Chat, { onDelete: "cascade", onUpdate: "cascade", hooks: true });
+      Barber.hasMany(models.Transaction, { onDelete: "cascade", onUpdate: "cascade", hooks: true });
+      Barber.hasMany(models.Chat, { onDelete: "cascade", onUpdate: "cascade", hooks: true });
     }
   }
   Barber.init(

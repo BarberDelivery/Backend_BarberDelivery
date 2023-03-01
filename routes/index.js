@@ -2,7 +2,7 @@ const express = require("express");
 const router = express();
 
 // ====== Example of naming variables in routing =======
-// const routesCustomer = require("./routesCustomer");
-// router.use("/customer", routesCustomer);
+const customerRoutes = require("./customerRoutes");
+router.use("/customer", customerRoutes);
 
 module.exports = router;
