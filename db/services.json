@@ -1,0 +1,12 @@
+[
+  {
+    "name": "Trim Beard and Mustache",
+    "price": 35000,
+    "duration": 15
+  },
+  {
+    "name": "Massage",
+    "price": 25000,
+    "duration": 30
+  }
+]

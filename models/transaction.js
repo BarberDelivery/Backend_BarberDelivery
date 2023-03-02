@@ -5,14 +5,13 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       Transaction.belongsTo(models.Customer, { onDelete: "cascade", onUpdate: "cascade" });
       Transaction.belongsTo(models.Barber, { onDelete: "cascade", onUpdate: "cascade" });
-      Transaction.belongsTo(models.Item);
+      Transaction.hasMany(models.ServicesTransantion, { onDelete: "cascade", onUpdate: "cascade", hooks: true });
     }
   }
   Transaction.init(
     {
       CustomerId: DataTypes.INTEGER,
       BarberId: DataTypes.INTEGER,
-      isPaid: DataTypes.BOOLEAN,
       status: DataTypes.STRING,
       cutRating: DataTypes.INTEGER,
       totalPrice: {
@@ -28,6 +27,8 @@ module.exports = (sequelize, DataTypes) => {
           },
         },
       },
+      duration: DataTypes.INTEGER,
+      date: DataTypes.DATE,
     },
     {
       sequelize,

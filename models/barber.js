@@ -5,7 +5,7 @@ module.exports = (sequelize, DataTypes) => {
   class Barber extends Model {
     static associate(models) {
       Barber.hasMany(models.Transaction, { onDelete: "cascade", onUpdate: "cascade", hooks: true });
-      Barber.hasMany(models.Chat, { onDelete: "cascade", onUpdate: "cascade", hooks: true });
+      Barber.hasMany(models.Schedule, { onDelete: "cascade", onUpdate: "cascade", hooks: true });
     }
   }
   Barber.init(

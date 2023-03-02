@@ -5,7 +5,6 @@ module.exports = (sequelize, DataTypes) => {
   class Customer extends Model {
     static associate(models) {
       Customer.hasMany(models.Transaction, { onDelete: "cascade", onUpdate: "cascade", hooks: true });
-      Customer.hasMany(models.Chat, { onDelete: "cascade", onUpdate: "cascade", hooks: true });
     }
   }
   Customer.init(

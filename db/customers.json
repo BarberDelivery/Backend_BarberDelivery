@@ -3,7 +3,6 @@
     "username": "jin",
     "email": "jin@gmail.com",
     "password": "12345678",
-    "isOnline": true,
     "isStudent": false,
     "lastCut": "2023-02-23 23:43:01.568 +0700"
   },
@@ -11,7 +10,6 @@
     "username": "kazama",
     "email": "kazama@gmail.com",
     "password": "12345678",
-    "isOnline": false,
     "isStudent": true,
     "lastCut": "2023-02-23 23:43:01.568 +0700"
   }
