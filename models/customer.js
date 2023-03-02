@@ -55,7 +55,6 @@ module.exports = (sequelize, DataTypes) => {
           },
         },
       },
-      isOnline: DataTypes.BOOLEAN,
       isStudent: DataTypes.BOOLEAN,
       lastCut: DataTypes.DATE,
     },
