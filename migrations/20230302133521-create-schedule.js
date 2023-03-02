@@ -2,21 +2,12 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable("Transactions", {
+    await queryInterface.createTable("Schedules", {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER,
-      },
-      CustomerId: {
-        type: Sequelize.INTEGER,
-        references: {
-          model: "Customers",
-          key: "id",
-        },
-        onDelete: "CASCADE",
-        onUpdate: "CASCADE",
       },
       BarberId: {
         type: Sequelize.INTEGER,
@@ -27,20 +18,11 @@ module.exports = {
         onDelete: "CASCADE",
         onUpdate: "CASCADE",
       },
-      status: {
-        type: Sequelize.STRING,
+      timeStart: {
+        type: Sequelize.TIME,
       },
-      cutRating: {
-        type: Sequelize.INTEGER,
-      },
-      totalPrice: {
-        type: Sequelize.BIGINT,
-      },
-      duration: {
-        type: Sequelize.INTEGER,
-      },
-      date: {
-        type: Sequelize.DATE,
+      timeEnd: {
+        type: Sequelize.TIME,
       },
       createdAt: {
         allowNull: false,
@@ -53,6 +35,6 @@ module.exports = {
     });
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable("Transactions");
+    await queryInterface.dropTable("Schedules");
   },
 };

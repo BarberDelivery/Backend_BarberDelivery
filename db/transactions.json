@@ -2,17 +2,19 @@
   {
     "CustomerId": 1,
     "BarberId": 2,
-    "ItemId": null,
-    "isPaid": false,
+    "status": "OnGoing",
     "cutRating": 2,
-    "totalPrice": 25000
+    "totalPrice": 25000,
+    "duration": 150,
+    "date": "2023-02-19 00:01:52.723 +0700"
   },
   {
     "CustomerId": 2,
     "BarberId": 1,
-    "ItemId": 2,
-    "isPaid": true,
+    "status": "pending",
     "cutRating": 5,
-    "totalPrice": 85000
+    "totalPrice": 85000,
+    "duration": 120,
+    "date": "2023-02-19 00:01:52.723 +0700"
   }
 ]

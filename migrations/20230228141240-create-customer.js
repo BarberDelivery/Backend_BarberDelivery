@@ -19,10 +19,6 @@ module.exports = {
       password: {
         type: Sequelize.STRING,
       },
-      isOnline: {
-        type: Sequelize.BOOLEAN,
-        defaultValue: false,
-      },
       isStudent: {
         type: Sequelize.BOOLEAN,
         defaultValue: false,

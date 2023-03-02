@@ -21,9 +21,7 @@ module.exports = {
       },
       activityStatus: {
         type: Sequelize.STRING,
-      },
-      cutThisWeek: {
-        type: Sequelize.INTEGER,
+        defaultValue: "standBy",
       },
       yearOfExperience: {
         type: Sequelize.INTEGER,

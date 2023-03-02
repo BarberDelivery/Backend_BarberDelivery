@@ -20,8 +20,8 @@ module.exports = {
       return el;
     });
 
-    let itemsData = JSON.parse(fs.readFileSync("./db/items.json", "utf-8"));
-    itemsData = itemsData.map((el) => {
+    let servicesData = JSON.parse(fs.readFileSync("./db/services.json", "utf-8"));
+    servicesData = servicesData.map((el) => {
       el.createdAt = new Date();
       el.updatedAt = new Date();
       return el;
@@ -34,25 +34,16 @@ module.exports = {
       return el;
     });
 
-    let chatsData = JSON.parse(fs.readFileSync("./db/chats.json", "utf-8"));
-    chatsData = chatsData.map((el) => {
-      el.createdAt = new Date();
-      el.updatedAt = new Date();
-      return el;
-    });
-
     await queryInterface.bulkInsert("Customers", customersData, null);
     await queryInterface.bulkInsert("Barbers", barbersData, null);
-    await queryInterface.bulkInsert("Items", itemsData, null);
+    await queryInterface.bulkInsert("Services", servicesData, null);
     await queryInterface.bulkInsert("Transactions", transactionsData, null);
-    await queryInterface.bulkInsert("Chats", chatsData, null);
   },
 
   async down(queryInterface, Sequelize) {
     await queryInterface.bulkDelete("Customers", null, {});
     await queryInterface.bulkDelete("Barbers", null, {});
-    await queryInterface.bulkDelete("Items", null, {});
+    await queryInterface.bulkDelete("Services", null, {});
     await queryInterface.bulkDelete("Transactions", null, {});
-    await queryInterface.bulkDelete("Chats", null, {});
   },
 };

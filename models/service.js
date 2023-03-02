@@ -1,12 +1,12 @@
 "use strict";
 const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
-  class Item extends Model {
+  class Service extends Model {
     static associate(models) {
-      Item.hasMany(models.Transaction);
+      Service.hasMany(models.ServicesTransantion);
     }
   }
-  Item.init(
+  Service.init(
     {
       TransactionId: DataTypes.INTEGER,
       name: {
@@ -35,7 +35,7 @@ module.exports = (sequelize, DataTypes) => {
           },
         },
       },
-      isPaid: DataTypes.BOOLEAN,
+      duration: DataTypes.INTEGER,
     },
     {
       sequelize,
