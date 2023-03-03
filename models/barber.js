@@ -57,7 +57,6 @@ module.exports = (sequelize, DataTypes) => {
         },
       },
       activityStatus: DataTypes.STRING,
-      cutThisWeek: DataTypes.INTEGER,
       yearOfExperience: DataTypes.INTEGER,
       rating: DataTypes.FLOAT,
       price: DataTypes.BIGINT,

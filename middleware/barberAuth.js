@@ -1,7 +1,7 @@
 const { decodeToken } = require("../helpers/jwt");
 const { Barber } = require("../models/index");
 
-const authentication = async (req, res, next) => {
+const barberAuthentication = async (req, res, next) => {
   try {
     const { access_token } = req.headers;
 
@@ -17,7 +17,10 @@ const authentication = async (req, res, next) => {
       throw { name: "invalid-token" };
     }
 
-    req.barber = dataBarber;
+    req.barber = {
+      id : dataBarber.id,
+      username : dataBarber.username
+    }
 
     next();
   } catch (err) {
@@ -26,4 +29,4 @@ const authentication = async (req, res, next) => {
   }
 };
 
-module.exports = { authentication };
+module.exports = { barberAuthentication };

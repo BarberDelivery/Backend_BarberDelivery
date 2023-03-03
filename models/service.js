@@ -3,22 +3,21 @@ const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
   class Service extends Model {
     static associate(models) {
-      Service.hasMany(models.ServicesTransantion);
+      Service.hasMany(models.ServicesTransaction);
     }
   }
   Service.init(
     {
-      TransactionId: DataTypes.INTEGER,
       name: {
         type: DataTypes.STRING,
         allowNull: false,
         validate: {
           notNull: {
             args: true,
-            msg: "Name of Product can't be null",
+            msg: "Name of Service can't be null",
           },
           notEmpty: {
-            msg: "Name of Product can't be empty",
+            msg: "Name of Service can't be empty",
           },
         },
       },
@@ -28,10 +27,10 @@ module.exports = (sequelize, DataTypes) => {
         validate: {
           notNull: {
             args: true,
-            msg: "Price of Product can't be null",
+            msg: "Price of Service can't be null",
           },
           notEmpty: {
-            msg: "Price of Product can't be empty",
+            msg: "Price of Service can't be empty",
           },
         },
       },
@@ -39,8 +38,8 @@ module.exports = (sequelize, DataTypes) => {
     },
     {
       sequelize,
-      modelName: "Item",
+      modelName: "Service",
     }
   );
-  return Item;
+  return Service;
 };
