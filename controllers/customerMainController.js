@@ -10,7 +10,7 @@ class customerMainController {
         attributes: { exclude: ["password"] },
       });
 
-      console.log(dataListBarber);
+      // console.log(dataListBarber);
       res.status(200).json(dataListBarber);
     } catch (err) {
       console.log(err);
@@ -35,6 +35,7 @@ class customerMainController {
       next();
     }
   }
+
 
   static async postTransaction(req, res, next) {
     try {

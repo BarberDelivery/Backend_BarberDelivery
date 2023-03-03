@@ -17,6 +17,7 @@ module.exports = (sequelize, DataTypes) => {
       BarberId: DataTypes.INTEGER,
       timeStart: DataTypes.TIME,
       timeEnd: DataTypes.TIME,
+      status : DataTypes.STRING,
     },
     {
       sequelize,

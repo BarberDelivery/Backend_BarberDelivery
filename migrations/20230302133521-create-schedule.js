@@ -24,6 +24,9 @@ module.exports = {
       timeEnd: {
         type: Sequelize.TIME,
       },
+      status : {
+      type: Sequelize.STRING,
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE,
