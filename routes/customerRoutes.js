@@ -9,6 +9,7 @@ router.post("/login", CustomerProfileController.login);
 
 router.use(customerAuthentication);
 router.get("/order/barber", customerMainController.getAllBarber);
+router.post("/order/transaction/:barberId", customerMainController.postTransaction);
 router.get("/order/barber/:barberId", customerMainController.getBarberById);
 
 module.exports = router;
