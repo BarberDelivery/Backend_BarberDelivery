@@ -1,4 +1,5 @@
-const { Customer, Barber, Item, Transaction, Service, ServicesTransaction } = require("../models/index");
+const { Customer, Barber, Item, Transaction, Service, ServicesTransaction, Schedule } = require("../models/index");
+const { getDistance } = require("geolib");
 
 class customerMainController {
   static async getAllBarber(req, res, next) {
@@ -38,7 +39,7 @@ class customerMainController {
 
   static async postTransaction(req, res, next) {
     try {
-      const { BarberId, priceBarber, date, servicesId, timeEstimate } = req.body;
+      const { BarberId, priceBarber, date, servicesId, timeEstimate, longLatCustomer, longLatBarber } = req.body;
 
       // let loopFindService = [];
 
@@ -50,6 +51,7 @@ class customerMainController {
         totalPrice: null,
         duration: null,
         date: null,
+        longLatCustomer: "",
       });
 
       let loopingIdService = [];
@@ -68,6 +70,18 @@ class customerMainController {
         },
       });
 
+      // // Calculate Distance
+      // console.log(longLatCustomer, "Customer LongLat");
+      // console.log(longLatBarber, "Barber LongLat");
+
+      const longLatCust = longLatCustomer.split(",");
+      const longLatBar = longLatBarber.split(",");
+
+      const dis = getDistance({ latitude: longLatCust[1], longitude: longLatCust[0] }, { latitude: longLatBar[1], longitude: longLatBar[0] });
+      // console.log(dis);
+      const priceDistance = Math.floor(dis / 1000) * 7000;
+      // console.log(priceDistance, "}}}}}}}}}}}}}}}}}");
+
       // Calculation For Total Price
       const priceService = getDataService.map((el) => {
         return el.Service.price;
@@ -77,7 +91,7 @@ class customerMainController {
         return a + b;
       }, 0);
 
-      let totalPrice = +sumArrayPrice + +priceBarber;
+      let totalPrice = +sumArrayPrice + +priceBarber + priceDistance;
 
       // Calculation For Duration
       const durationService = getDataService.map((el) => {
@@ -99,6 +113,7 @@ class customerMainController {
           totalPrice: totalPrice,
           duration: totalDuration,
           date: date,
+          longLatCustomer: longLatCustomer,
         },
         {
           where: {
@@ -106,6 +121,23 @@ class customerMainController {
           },
         }
       );
+
+      // console.log(date);
+      const timeConvert = new Date(date);
+      const timeConvertEnd = new Date(date);
+      timeConvertEnd.setMinutes(timeConvertEnd.getMinutes() + totalDuration);
+      console.log(timeConvert);
+      console.log(timeConvertEnd);
+      console.log("2023-03-07 19:05:00.000 +0700");
+
+      const createSchedule = await Schedule.create({
+        BarberId: BarberId,
+        timeStart: timeConvert,
+        timeEnd: timeConvertEnd,
+        status: "unfinished",
+      });
+
+      console.log(createSchedule);
 
       res.status(201).json(createTransaction);
     } catch (err) {

@@ -15,8 +15,15 @@ module.exports = (sequelize, DataTypes) => {
   Schedule.init(
     {
       BarberId: DataTypes.INTEGER,
-      timeStart: DataTypes.TIME,
-      timeEnd: DataTypes.TIME,
+      timeStart: {
+        type: DataTypes.DATE,
+        timestamps: true,
+      },
+      timeEnd: {
+        type: DataTypes.DATE,
+        timestamps: true,
+      },
+      status: DataTypes.STRING,
     },
     {
       sequelize,

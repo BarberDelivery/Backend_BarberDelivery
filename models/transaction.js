@@ -19,6 +19,7 @@ module.exports = (sequelize, DataTypes) => {
       },
       duration: DataTypes.INTEGER,
       date: DataTypes.DATE,
+      longLatCustomer: DataTypes.STRING,
     },
     {
       sequelize,
