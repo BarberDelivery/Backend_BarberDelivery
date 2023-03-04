@@ -1,13 +1,17 @@
 "use strict";
 const { Model } = require("sequelize");
-const { hash } = require("../helpers/bcrypt");
 module.exports = (sequelize, DataTypes) => {
-  class Customer extends Model {
+  class Admin extends Model {
+    /**
+     * Helper method for defining associations.
+     * This method is not a part of Sequelize lifecycle.
+     * The `models/index` file will call this method automatically.
+     */
     static associate(models) {
-      Customer.hasMany(models.Transaction, { onDelete: "cascade", onUpdate: "cascade", hooks: true });
+      // define association here
     }
   }
-  Customer.init(
+  Admin.init(
     {
       username: {
         type: DataTypes.STRING,
@@ -58,17 +62,11 @@ module.exports = (sequelize, DataTypes) => {
           },
         },
       },
-      isStudent: DataTypes.BOOLEAN,
-      lastCut: DataTypes.DATE,
-      imgDataCustomer: DataTypes.STRING,
     },
     {
       sequelize,
-      modelName: "Customer",
+      modelName: "Admin",
     }
   );
-  Customer.beforeCreate((customer) => {
-    customer.password = hash(customer.password);
-  });
-  return Customer;
+  return Admin;
 };

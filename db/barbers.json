@@ -5,7 +5,7 @@
     "password": "12345678",
     "activityStatus": "Cutting",
     "yearOfExperience": 9,
-    "rating": 9.7,
+    "rating": 4.5,
     "price": 60000,
     "description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s.",
     "longLatBarber": "-6.274352505262114,106.78225871774467"
@@ -16,7 +16,7 @@
     "password": "12345678",
     "activityStatus": "standby",
     "yearOfExperience": 1,
-    "rating": 6.5,
+    "rating": 3.8,
     "price": 25000,
     "description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s.",
     "longLatBarber": "-6.274352505262114,106.78225871774467"
