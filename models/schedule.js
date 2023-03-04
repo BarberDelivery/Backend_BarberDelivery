@@ -17,13 +17,12 @@ module.exports = (sequelize, DataTypes) => {
       BarberId: DataTypes.INTEGER,
       timeStart: {
         type: DataTypes.DATE,
-        timestamps: true,
       },
       timeEnd: {
         type: DataTypes.DATE,
-        timestamps: true,
       },
       status: DataTypes.STRING,
+      TransactionId: DataTypes.INTEGER,
     },
     {
       sequelize,
