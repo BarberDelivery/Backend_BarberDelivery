@@ -42,6 +42,12 @@ module.exports = {
       date: {
         type: Sequelize.DATE,
       },
+      longLatCustomer: {
+        type: Sequelize.STRING,
+      },
+      tripPrice: {
+        type: Sequelize.INTEGER,
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE,

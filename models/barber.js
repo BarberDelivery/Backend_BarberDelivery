@@ -12,6 +12,9 @@ module.exports = (sequelize, DataTypes) => {
     {
       username: {
         type: DataTypes.STRING,
+        unique: {
+          msg: "username must be unique",
+        },
         allowNull: false,
         validate: {
           notNull: {
@@ -61,6 +64,8 @@ module.exports = (sequelize, DataTypes) => {
       rating: DataTypes.FLOAT,
       price: DataTypes.BIGINT,
       description: DataTypes.TEXT,
+      longLatBarber: DataTypes.STRING,
+      profileImage: DataTypes.STRING,
     },
     {
       sequelize,

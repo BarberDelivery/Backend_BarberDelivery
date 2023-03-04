@@ -19,13 +19,16 @@ module.exports = {
         onUpdate: "CASCADE",
       },
       timeStart: {
-        type: Sequelize.TIME,
+        type: Sequelize.DATE,
       },
       timeEnd: {
-        type: Sequelize.TIME,
+        type: Sequelize.DATE,
       },
-      status : {
-      type: Sequelize.STRING,
+      status: {
+        type: Sequelize.STRING,
+      },
+      TransactionId: {
+        type: Sequelize.INTEGER,
       },
       createdAt: {
         allowNull: false,

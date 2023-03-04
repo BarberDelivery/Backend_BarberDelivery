@@ -11,6 +11,7 @@ module.exports = {
       },
       username: {
         type: Sequelize.STRING,
+        unique: true,
       },
       email: {
         type: Sequelize.STRING,
@@ -34,6 +35,12 @@ module.exports = {
       },
       description: {
         type: Sequelize.TEXT,
+      },
+      longLatBarber: {
+        type: Sequelize.STRING,
+      },
+      profileImage: {
+        type: Sequelize.STRING,
       },
       createdAt: {
         allowNull: false,
