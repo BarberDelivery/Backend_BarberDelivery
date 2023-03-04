@@ -179,12 +179,13 @@ class customerMainController {
           where: {
             id: getDataService[0].TransactionId,
           },
+          returning: true,
         }
       );
 
       // console.log(createSchedule);
 
-      res.status(201).json(createTransaction);
+      res.status(201).json(createTransaction[1][0]);
     } catch (err) {
       console.log(err);
       next(err);
@@ -303,7 +304,14 @@ class customerMainController {
       });
 
       const rateBarber = findBarber.rating;
-      const totalRating = (+rate + +rateBarber) / 2;
+      // console.log(rateBarber);
+      let totalRating;
+
+      if (rateBarber == 0) {
+        totalRating = +rate;
+      } else {
+        totalRating = (+rate + +rateBarber) / 2;
+      }
       console.log(findBarber.rating);
 
       await Barber.update(
