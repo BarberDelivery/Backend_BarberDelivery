@@ -21,11 +21,12 @@ class CustomerProfileController {
 
   static async login(req, res, next) {
     try {
-      const { email, password } = req.body;
+      const { username, email, password } = req.body;
       console.log(email, "<<<<<<<<<<<<<<<");
 
       let customerLogin = await Customer.findOne({
         where: {
+          username: username,
           email: email,
         },
       });
