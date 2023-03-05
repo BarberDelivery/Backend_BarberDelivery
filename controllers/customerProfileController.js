@@ -22,7 +22,7 @@ class CustomerProfileController {
   static async login(req, res, next) {
     try {
       const { username, email, password } = req.body;
-      console.log(email, "<<<<<<<<<<<<<<<");
+      console.log(email, password, "<<<<<<<<<<<<<<<");
 
       let customerLogin = await Customer.findOne({
         where: {
@@ -30,16 +30,19 @@ class CustomerProfileController {
           email: email,
         },
       });
+      // console.log(customerLogin.password, "llll");
 
       if (!customerLogin) {
         throw { name: "invalid-login" };
       }
 
-      let compareResult = compare(password, customerLogin.password);
+      let compareResult = await compare(password, customerLogin.password);
+      console.log(compareResult);
       if (!compareResult) {
+        console.log("masuk");
         throw { name: "invalid-login" };
       }
-
+      console.log("lewat");
       // const { id } = customerLogin;
       let access_token = encodeToken({
         id: customerLogin.id,

@@ -32,4 +32,4 @@ app.use(errorHandler);
   }
 })();
 
-// module.exports = app; For the testing purpose
+module.exports = app;
