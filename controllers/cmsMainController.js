@@ -52,7 +52,7 @@ class CmsController {
         throw { name: "invalid-login" };
       }
 
-      let compareResult = compare(password, adminLogin.password);
+      let compareResult = await compare(password, adminLogin.password);
       if (!compareResult) {
         throw { name: "invalid-login" };
       }

@@ -16,5 +16,23 @@
     "jest": "^29.4.3",
     "sequelize-cli": "^6.6.0",
     "supertest": "^6.3.3"
-  }
+  },
+  "name": "backend_barberdelivery",
+  "description": "",
+  "version": "1.0.0",
+  "main": "app.js",
+  "scripts": {
+    "test": "jest --runInBand --forceExit --coverage"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/BarberDelivery/Backend_BarberDelivery.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/BarberDelivery/Backend_BarberDelivery/issues"
+  },
+  "homepage": "https://github.com/BarberDelivery/Backend_BarberDelivery#readme"
 }
