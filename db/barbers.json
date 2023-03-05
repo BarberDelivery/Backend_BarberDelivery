@@ -7,7 +7,7 @@
     "yearOfExperience": 9,
     "rating": 4.5,
     "price": 60000,
-    "description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s.",
+    "description": "Look amazing with treatments from Dex Barber. Pamper yourself with various services such as haircuts and styling. Receive a better grooming experience that suits your style from professional barbers. Get your hair professionally groomed and enjoy your day with more confidence!",
     "longLatBarber": "-6.274352505262114,106.78225871774467",
     "profileImage" : "https://i.pinimg.com/564x/f6/b4/68/f6b4681177b48884aea65bcee09bdd2a.jpg"
   },
@@ -19,7 +19,43 @@
     "yearOfExperience": 1,
     "rating": 3.8,
     "price": 25000,
-    "description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s.",
+    "description": "Spice up your look today with a hot new grey blending or highlights that screams “WOW” and makes you stand out in a crowd. You won't believe you've waited this long.Whether you're looking for a refreshed  style or a completely new look, we can do it all. With our color blending and highlights, you'll have heads turning with your fresh new look.",
+    "longLatBarber": "-6.274352505262114,106.78225871774467",
+    "profileImage" : "https://i.pinimg.com/564x/f6/b4/68/f6b4681177b48884aea65bcee09bdd2a.jpg"
+  },
+  {
+    "username": "ghazi",
+    "email": "ghazi@gmail.com",
+    "password": "12345678",
+    "activityStatus": "standby",
+    "yearOfExperience": 1,
+    "rating": 4.8,
+    "price": 25000,
+    "description": " The Dex Barber we got you covered. All haircuts includes: shampoo & conditioner, hot towel, and straight razor hairline shaves. We also offer extras such as eyebrows wax, beard trim.  Whether you’ve got curly, thick, straight thin hair, or a mix of something in between, we know how to deliver your new, classic or innovative look. Give your hair the attention it deserves by giving us a call!",
+    "longLatBarber": "-6.274352505262114,106.78225871774467",
+    "profileImage" : "https://i.pinimg.com/564x/f6/b4/68/f6b4681177b48884aea65bcee09bdd2a.jpg"
+  },
+  {
+    "username": "steven",
+    "email": "steven@gmail.com",
+    "password": "12345678",
+    "activityStatus": "standby",
+    "yearOfExperience": 1,
+    "rating": 4.8,
+    "price": 25000,
+    "description": " The Dex Barber we got you covered. All haircuts includes: shampoo & conditioner, hot towel, and straight razor hairline shaves. We also offer extras such as eyebrows wax, beard trim.  Whether you’ve got curly, thick, straight thin hair, or a mix of something in between, we know how to deliver your new, classic or innovative look. Give your hair the attention it deserves by giving us a call!",
+    "longLatBarber": "-6.274352505262114,106.78225871774467",
+    "profileImage" : "https://i.pinimg.com/564x/f6/b4/68/f6b4681177b48884aea65bcee09bdd2a.jpg"
+  },
+  {
+    "username": "willy",
+    "email": "willy@gmail.com",
+    "password": "12345678",
+    "activityStatus": "standby",
+    "yearOfExperience": 1,
+    "rating": 4.8,
+    "price": 25000,
+    "description": " The Dex Barber we got you covered. All haircuts includes: shampoo & conditioner, hot towel, and straight razor hairline shaves. We also offer extras such as eyebrows wax, beard trim.  Whether you’ve got curly, thick, straight thin hair, or a mix of something in between, we know how to deliver your new, classic or innovative look. Give your hair the attention it deserves by giving us a call!",
     "longLatBarber": "-6.274352505262114,106.78225871774467",
     "profileImage" : "https://i.pinimg.com/564x/f6/b4/68/f6b4681177b48884aea65bcee09bdd2a.jpg"
   }
