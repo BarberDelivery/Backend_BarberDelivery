@@ -4,6 +4,7 @@ const dayjs = require("dayjs");
 const utc = require("dayjs/plugin/utc");
 const timezone = require("dayjs/plugin/timezone"); // dependent on utc plugin
 const locale = require("dayjs/locale/de");
+const Catalogue = require("../modelsMongo/catalogModel");
 
 dayjs.locale("de"); // use locale globally
 dayjs().locale("de").format(); // use locale in a specific instance
@@ -327,6 +328,16 @@ class customerMainController {
       console.log(totalRating);
 
       res.status(201).json({ message: "Rate Barber Successfully" });
+    } catch (err) {
+      console.log(err);
+      next(err);
+    }
+  }
+
+  static async getAllCatalogue(req, res, next) {
+    try {
+      const dataCatalogue = await Catalogue.getAllCatalogue();
+      res.status(200).json(dataCatalogue);
     } catch (err) {
       console.log(err);
       next(err);

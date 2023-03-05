@@ -1,21 +1,43 @@
 const { compare } = require("bcrypt");
 const { encodeToken } = require("../helpers/jwt");
-const { Customer, Barber, Item, Transaction, Chat, Admin } = require("../models/index");
+const { Customer, Barber, Item, Transaction, Chat } = require("../models/index");
+const Admin = require("../modelsMongo/adminModel");
+const Catalogue = require("../modelsMongo/catalogModel");
 class CmsController {
   static async register(req, res, next) {
     // res.status(201).json("Berhasil");
     try {
       const { username, email, password } = req.body;
-      console.log(req.body);
-      let customerRegisterData = await Admin.create({
+      const addDataAdmin = await Admin.addAdmin({
         username,
         email,
         password,
       });
-      res.status(201).json({ message: "Register Successfully", customerRegisterData });
+
+      res.status(201).json({
+        _id: addDataAdmin.insertedId,
+        username,
+        email,
+        password,
+      });
     } catch (err) {
       console.log(err);
-      next(err);
+      if (err.name === "username-notNull") {
+        res.status(400).json(err.message);
+      } else if (err.name === "email-notNull") {
+        res.status(400).json(err.message);
+      }
+      if (err.name === "password-notNull") {
+        res.status(400).json(err.message);
+      }
+      if (err.name === "phoneNumber-notNull") {
+        res.status(400).json(err.message);
+      }
+      if (err.name === "address-notNull") {
+        res.status(400).json(err.message);
+      } else {
+        next(err);
+      }
     }
   }
 
@@ -24,28 +46,22 @@ class CmsController {
       const { username, email, password } = req.body;
       console.log(email, "<<<<<<<<<<<<<<<");
 
-      let customerLogin = await Admin.findOne({
-        where: {
-          username: username,
-          email: email,
-        },
-      });
+      const adminLogin = await Admin.getByUsernameEmail(username, email);
 
-      if (!customerLogin) {
+      if (!adminLogin) {
         throw { name: "invalid-login" };
       }
 
-      let compareResult = compare(password, customerLogin.password);
+      let compareResult = compare(password, adminLogin.password);
       if (!compareResult) {
         throw { name: "invalid-login" };
       }
 
-      // const { id } = customerLogin;
       let access_token = encodeToken({
-        id: customerLogin.id,
+        id: adminLogin._id,
       });
       // console.log(token);
-      let sendUsernameForClient = customerLogin.username;
+      let sendUsernameForClient = adminLogin.username;
 
       res.status(200).json({
         access_token,
@@ -223,6 +239,51 @@ class CmsController {
       } else {
         throw { name: "data-not-found" };
       }
+    } catch (err) {
+      console.log(err);
+      next(err);
+    }
+  }
+
+  static async getAllCatalogue(req, res, next) {
+    try {
+      const dataCatalogue = await Catalogue.getAllCatalogue();
+      console.log(dataCatalogue);
+
+      res.status(200).json(dataCatalogue);
+    } catch (err) {
+      console.log(err);
+      next(err);
+    }
+  }
+
+  static async addCatalogue(req, res, next) {
+    try {
+      const { image } = req.body;
+      const addDataAdmin = await Catalogue.addCatalogue({
+        image,
+      });
+
+      res.status(201).json({
+        _id: addDataAdmin.insertedId,
+        image,
+      });
+    } catch (err) {
+      console.log(err);
+      if (err.name === "image-notNull") {
+        res.status(400).json(err.message);
+      } else {
+        next(err);
+      }
+    }
+  }
+
+  static async deleteCatalogueById(req, res, next) {
+    try {
+      const { catalogueId } = req.params;
+      const deleteCatalogue = await Catalogue.deleteCatalogueById(catalogueId);
+
+      res.status(200).json({ message: "Delete Catalogue Successfuly" });
     } catch (err) {
       console.log(err);
       next(err);

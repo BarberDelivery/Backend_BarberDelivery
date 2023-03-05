@@ -15,5 +15,6 @@ router.get("/order/transaction/:transactionId", customerMainController.getTransa
 router.get("/order/barber/:barberId", customerMainController.getBarberById);
 router.patch("/order/payment", customerMainController.successPayment);
 router.patch("/rate", customerMainController.rateBarber);
+router.get("/catalogue", customerMainController.getAllCatalogue);
 
 module.exports = router;

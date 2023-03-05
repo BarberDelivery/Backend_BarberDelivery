@@ -14,5 +14,8 @@ router.post("/barber", CmsController.postBarber);
 router.get("/barber/:barberId", CmsController.getBarberId);
 router.put("/barber/:barberId", CmsController.editBarber);
 router.delete("/barber/:barberId", CmsController.deleteBarber);
+router.get("/catalogue", CmsController.getAllCatalogue);
+router.post("/catalogue", CmsController.addCatalogue);
+router.delete("/catalogue/:catalogueId", CmsController.deleteCatalogueById);
 
 module.exports = router;
