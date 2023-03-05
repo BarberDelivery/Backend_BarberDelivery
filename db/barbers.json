@@ -8,7 +8,8 @@
     "rating": 4.5,
     "price": 60000,
     "description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s.",
-    "longLatBarber": "-6.274352505262114,106.78225871774467"
+    "longLatBarber": "-6.274352505262114,106.78225871774467",
+    "profileImage" : "https://i.pinimg.com/564x/f6/b4/68/f6b4681177b48884aea65bcee09bdd2a.jpg"
   },
   {
     "username": "alfian",
@@ -19,6 +20,7 @@
     "rating": 3.8,
     "price": 25000,
     "description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s.",
-    "longLatBarber": "-6.274352505262114,106.78225871774467"
+    "longLatBarber": "-6.274352505262114,106.78225871774467",
+    "profileImage" : "https://i.pinimg.com/564x/f6/b4/68/f6b4681177b48884aea65bcee09bdd2a.jpg"
   }
 ]
