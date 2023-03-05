@@ -1,5 +1,5 @@
 const { decodeToken } = require("../helpers/jwt");
-const { Admin } = require("../models/index");
+const Admin = require("../modelsMongo/adminModel");
 
 const cmsAuthentication = async (req, res, next) => {
   try {
@@ -11,7 +11,8 @@ const cmsAuthentication = async (req, res, next) => {
 
     const dataToken = decodeToken(access_token);
 
-    const dataAdmin = await Admin.findByPk(dataToken.id);
+    console.log(dataToken.id);
+    const dataAdmin = await Admin.getByAdminId(dataToken.id);
 
     if (!dataAdmin) {
       throw { name: "invalid-token" };
