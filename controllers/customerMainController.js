@@ -1,10 +1,19 @@
-const { Customer, Barber, Item, Transaction, Service, ServicesTransaction, Schedule } = require("../models/index");
+const {
+  Customer,
+  Barber,
+  Item,
+  Transaction,
+  Service,
+  ServicesTransaction,
+  Schedule,
+} = require("../models/index");
 const distance = require("google-distance-matrix");
 const dayjs = require("dayjs");
 const utc = require("dayjs/plugin/utc");
 const timezone = require("dayjs/plugin/timezone"); // dependent on utc plugin
 const locale = require("dayjs/locale/de");
 const Catalogue = require("../modelsMongo/catalogModel");
+const cloudinary = require("../helpers/cloudinary");
 
 dayjs.locale("de"); // use locale globally
 dayjs().locale("de").format(); // use locale in a specific instance
@@ -50,7 +59,14 @@ class customerMainController {
 
   static async postTransaction(req, res, next) {
     try {
-      const { BarberId, priceBarber, date, servicesId, longLatCustomer, longLatBarber } = req.body;
+      const {
+        BarberId,
+        priceBarber,
+        date,
+        servicesId,
+        longLatCustomer,
+        longLatBarber,
+      } = req.body;
 
       // let loopFindService = [];
 
@@ -71,7 +87,9 @@ class customerMainController {
         return { ServiceId: +el, TransactionId: firstCreateTransaction.id };
       });
 
-      const newServiceTransaction = await ServicesTransaction.bulkCreate(loopingIdService);
+      const newServiceTransaction = await ServicesTransaction.bulkCreate(
+        loopingIdService
+      );
       const getDataService = await ServicesTransaction.findAll({
         where: {
           TransactionId: newServiceTransaction[0].TransactionId,
@@ -102,7 +120,10 @@ class customerMainController {
       // Example usage with async/await:
       async function main() {
         try {
-          const distances = await getDistances([`${longLatCustomer}`], [`${longLatBarber}`]);
+          const distances = await getDistances(
+            [`${longLatCustomer}`],
+            [`${longLatBarber}`]
+          );
           return distances.rows[0].elements;
           // console.log(distances);
         } catch (err) {
@@ -112,7 +133,8 @@ class customerMainController {
 
       const resultDistance = await main();
       console.log(resultDistance, "((((((((");
-      const totalPriceDistance = resultDistance[0].distance.text.split(" ")[0] * 1000;
+      const totalPriceDistance =
+        resultDistance[0].distance.text.split(" ")[0] * 1000;
 
       // Calculation For Total Price
       const priceService = getDataService.map((el) => {
@@ -132,13 +154,15 @@ class customerMainController {
       let totalPrice;
 
       if (findCustomer.isStudent == true) {
-        totalPrice = +sumArrayPrice + +priceBarber + +totalPriceDistance - 10000;
+        totalPrice =
+          +sumArrayPrice + +priceBarber + +totalPriceDistance - 10000;
       } else {
         totalPrice = +sumArrayPrice + +priceBarber + +totalPriceDistance;
       }
 
       // Calculation For Duration
-      const totalTripDuration = resultDistance[0].duration.text.split(" ")[0] * 2;
+      const totalTripDuration =
+        resultDistance[0].duration.text.split(" ")[0] * 2;
       const durationService = getDataService.map((el) => {
         return el.Service.duration;
       });
@@ -357,6 +381,34 @@ class customerMainController {
     try {
       const dataCatalogue = await Catalogue.getAllCatalogue();
       res.status(200).json(dataCatalogue);
+    } catch (err) {
+      console.log(err);
+      next(err);
+    }
+  }
+
+  static async uploadImage(req, res, next) {
+    try {
+      const uploader = async (path) => await cloudinary.uploads(path, "Images");
+
+      const { path } = req.file;
+      const newPath = await uploader(path);
+
+      await Customer.update(
+        {
+          imgDataCustomer: newPath.url,
+        },
+        {
+          where: {
+            id: req.customer.id,
+          },
+        }
+      );
+
+      res.status(201).json({
+        message: "Upload image is successful",
+        data: newPath,
+      });
     } catch (err) {
       console.log(err);
       next(err);
