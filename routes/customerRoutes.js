@@ -9,10 +9,10 @@ router.post("/login", CustomerProfileController.login);
 
 router.use(customerAuthentication);
 router.get("/order/barber", customerMainController.getAllBarber);
+router.get("/order/barber/:barberId", customerMainController.getBarberById);
 router.get("/order/transaction", customerMainController.getAllTransaction);
 router.post("/order/transaction", customerMainController.postTransaction);
 router.get("/order/transaction/:transactionId", customerMainController.getTransactionById);
-router.get("/order/barber/:barberId", customerMainController.getBarberById);
 router.patch("/order/payment", customerMainController.successPayment);
 router.patch("/rate", customerMainController.rateBarber);
 router.get("/catalogue", customerMainController.getAllCatalogue);

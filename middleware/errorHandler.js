@@ -1,5 +1,11 @@
 function errorHandler(err, req, res, next) {
-  if (err.name === "SequelizeValidationError") {
+  if (err.name === "username-required") {
+    res.status(400).json({ message: "Username Required" });
+  } else if (err.name === "email-required") {
+    res.status(400).json({ message: "Email Required" });
+  } else if (err.name === "password-required") {
+    res.status(400).json({ message: "Password Required" });
+  } else if (err.name === "SequelizeValidationError") {
     let errorData = err.errors.map((el) => {
       return el.message;
     });
