@@ -36,17 +36,21 @@ class customerMainController {
         attributes: { exclude: ["password"] },
       });
 
+      if (!dataBarber) {
+        throw { name: "data-not-found" };
+      }
+
       console.log(dataBarber);
       res.status(200).json(dataBarber);
     } catch (err) {
       console.log(err);
-      next();
+      next(err);
     }
   }
 
   static async postTransaction(req, res, next) {
     try {
-      const { BarberId, priceBarber, date, servicesId, timeEstimate, longLatCustomer, longLatBarber } = req.body;
+      const { BarberId, priceBarber, date, servicesId, longLatCustomer, longLatBarber } = req.body;
 
       // let loopFindService = [];
 
@@ -168,7 +172,7 @@ class customerMainController {
         {
           CustomerId: req.customer.id,
           BarberId: BarberId,
-          status: "pending",
+          status: "",
           cutRating: null,
           totalPrice: totalPrice,
           duration: totalDuration,
@@ -219,6 +223,9 @@ class customerMainController {
           { model: Barber, attributes: { exclude: ["password"] } },
         ],
       });
+      if (!getTransactionById) {
+        throw { name: "data-not-found" };
+      }
       console.log(getTransactionById);
       res.status(200).json(getTransactionById);
     } catch (err) {
@@ -248,7 +255,7 @@ class customerMainController {
 
       await Transaction.update(
         {
-          status: "paid",
+          status: "pending",
         },
         {
           where: {
@@ -298,11 +305,20 @@ class customerMainController {
   static async rateBarber(req, res, next) {
     try {
       const { rate, BarberId } = req.body;
+
+      if (!rate) {
+        throw { name: "rate-must-filled" };
+      }
+
       const findBarber = await Barber.findOne({
         where: {
           id: BarberId,
         },
       });
+
+      if (!findBarber) {
+        throw { name: "data-not-found" };
+      }
 
       const rateBarber = findBarber.rating;
       // console.log(rateBarber);
@@ -329,6 +345,9 @@ class customerMainController {
 
       res.status(201).json({ message: "Rate Barber Successfully" });
     } catch (err) {
+      if (err.name == "rate-must-filled") {
+        res.status(400).json({ message: "Please, you must rate the Barbers" });
+      }
       console.log(err);
       next(err);
     }

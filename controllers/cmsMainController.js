@@ -1,4 +1,5 @@
 const { compare } = require("bcrypt");
+const { hash } = require("../helpers/bcrypt");
 const { encodeToken } = require("../helpers/jwt");
 const { Customer, Barber, Item, Transaction, Chat } = require("../models/index");
 const Admin = require("../modelsMongo/adminModel");
@@ -8,17 +9,19 @@ class CmsController {
     // res.status(201).json("Berhasil");
     try {
       const { username, email, password } = req.body;
+      const encrypPass = hash(password);
+      console.log(encrypPass);
       const addDataAdmin = await Admin.addAdmin({
         username,
         email,
-        password,
+        password: encrypPass,
       });
 
       res.status(201).json({
         _id: addDataAdmin.insertedId,
         username,
         email,
-        password,
+        encrypPass,
       });
     } catch (err) {
       console.log(err);
