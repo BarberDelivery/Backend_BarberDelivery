@@ -101,6 +101,7 @@ class barberMainController {
           id: transactionId,
           BarberId: req.barber.id,
         },
+        include: [{ model: Customer, attributes: { exclude: ["password"] } }],
       });
 
       if (!transactionById) {

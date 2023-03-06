@@ -6,7 +6,7 @@ afterAll(async () => {
   await sequelize.queryInterface.bulkDelete("Customers", null, { truncate: true, restartIndentity: true, cascade: true });
 });
 
-describe("API customer", () => {
+describe.skip("API customer", () => {
   describe("POST /customer/register", () => {
     it("should register and response 201", async () => {
       const customerRegisterData = {

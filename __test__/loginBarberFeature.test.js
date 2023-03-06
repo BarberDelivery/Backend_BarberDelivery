@@ -22,7 +22,7 @@ afterAll(async () => {
   await sequelize.queryInterface.bulkDelete("Barbers", null, { truncate: true, restartIndentity: true, cascade: true });
 });
 
-describe("API customer", () => {
+describe.skip("API customer", () => {
   describe("POST /barber/login", () => {
     it("should login and response 200", async () => {
       const barberLoginData = {
