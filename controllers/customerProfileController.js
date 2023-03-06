@@ -1,6 +1,12 @@
 const { compare } = require("bcrypt");
 const { encodeToken } = require("../helpers/jwt");
-const { Customer, Barber, Item, Transaction, Chat } = require("../models/index");
+const {
+  Customer,
+  Barber,
+  Item,
+  Transaction,
+  Chat,
+} = require("../models/index");
 class CustomerProfileController {
   static async register(req, res, next) {
     // res.status(201).json("Berhasil");
@@ -12,7 +18,9 @@ class CustomerProfileController {
         email,
         password,
       });
-      res.status(201).json({ message: "Register Successfully", customerRegisterData });
+      res
+        .status(201)
+        .json({ message: "Register Successfully", customerRegisterData });
     } catch (err) {
       console.log(err);
       next(err);
@@ -21,12 +29,10 @@ class CustomerProfileController {
 
   static async login(req, res, next) {
     try {
-      const { username, email, password } = req.body;
-      console.log(email, password, "<<<<<<<<<<<<<<<");
+      const { email, password } = req.body;
 
       let customerLogin = await Customer.findOne({
         where: {
-          username: username,
           email: email,
         },
       });
