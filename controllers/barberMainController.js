@@ -100,6 +100,7 @@ class barberMainController {
         where: {
           BarberId: req.barber.id,
         },
+        include: [{ model: Customer }],
       });
 
       res.status(200).json(transactions);
@@ -117,7 +118,14 @@ class barberMainController {
           id: transactionId,
           BarberId: req.barber.id,
         },
-        include: [{ model: Customer, attributes: { exclude: ["password"] } }],
+        include: [
+          {
+            model: ServicesTransaction,
+          },
+          { model: Customer, attributes: { exclude: ["password"] } },
+          { model: Barber, attributes: { exclude: ["password"] } },
+          { model: ServicesTransaction, include: [{ model: Service }] },
+        ],
       });
 
       if (!transactionById) {

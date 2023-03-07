@@ -6,7 +6,7 @@ const router = express();
 router.post("/login", barberMainController.login);
 
 router.use(barberAuthentication);
-router.get("/transaction", barberMainController.getAllTransaction);
+router.get("/transaction", barberMainController.getAllTransaction); //
 router.get("/schedule", barberMainController.getSchedule);
 router.get("/transaction/:transactionId", barberMainController.getTransactionById);
 router.patch("/activitystatus", barberMainController.patchActivityStatus);
