@@ -465,6 +465,33 @@ describe("API Customer", () => {
     });
   });
 
+  describe("DELETE /admin/barber/:barberId", () => {
+    it("should response and status 200", async () => {
+      const response = await request(app).delete("/admin/barber/1").set("access_token", access_token);
+
+      // console.log(response.body[0], "<<<<<<<<<<<<<<<<<<<<<<<<<<<<");
+      expect(response.status).toBe(200);
+
+      expect(response.body.message).toBe(response.body.message);
+    });
+
+    it("should response and status 404", async () => {
+      const response = await request(app).delete("/admin/barber/99").set("access_token", access_token);
+
+      // console.log(response.body.message, "<<<<<<<<<<<<<<<<<<<<<<<<<<<<");
+      expect(response.status).toBe(404);
+      expect(response.body.message).toBe("Data not found");
+    });
+
+    it("should response and status 401", async () => {
+      const response = await request(app).delete("/admin/barber/1");
+
+      // console.log(response.body[0], "<<<<<<<<<<<<<<<<<<<<<<<<<<<<");
+      expect(response.body.message).toBe("Invalid Token");
+      expect(response.status).toBe(401);
+    });
+  });
+
   describe("POST /admin/catalogue", () => {
     it("should login and response 200", async () => {
       const postCatalogue = {

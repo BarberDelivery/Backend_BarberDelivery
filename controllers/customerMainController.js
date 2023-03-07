@@ -6,6 +6,7 @@ const timezone = require("dayjs/plugin/timezone"); // dependent on utc plugin
 const locale = require("dayjs/locale/de");
 const Catalogue = require("../modelsMongo/catalogModel");
 const cloudinary = require("../helpers/cloudinary");
+const axios = require("axios");
 
 dayjs.locale("de"); // use locale globally
 dayjs().locale("de").format(); // use locale in a specific instance
@@ -430,6 +431,170 @@ class customerMainController {
       });
       console.log(allSchedule);
       res.status(200).json(allSchedule);
+    } catch (err) {
+      console.log(err);
+      next(err);
+    }
+  }
+
+  static async paymentByCustomerId(req, res, next) {
+    const { transactionId } = req.params;
+
+    const getTransactionById = await Transaction.findOne({
+      where: {
+        id: transactionId,
+      },
+      include: [
+        {
+          model: ServicesTransaction,
+        },
+        { model: Customer, attributes: { exclude: ["password"] } },
+        { model: Barber, attributes: { exclude: ["password"] } },
+        { model: ServicesTransaction, include: [{ model: Service }] },
+      ],
+    });
+
+    if (!getTransactionById) {
+      throw { name: "data-not-found" };
+    }
+
+    // console.log(getTransactionById.ServicesTransactions);
+    // let dataObj = { name: "", price: 0 };
+    // let insertItem = [];
+    // let dataInsert = getTransactionById.ServicesTransactions.map((el) => {
+    //   // console.log(el.Service.name);
+    //   dataObj.name = el.Service.name;
+    //   dataObj.price = el.Service.price;
+    //   console.log(dataObj);
+    //   insertItem.push(dataObj);
+    // });
+
+    let insertItem = [];
+
+    insertItem = getTransactionById.ServicesTransactions.map((el) => {
+      return { name: el.Service.name, price: el.Service.price, quantity: 1 };
+    });
+
+    console.log(insertItem, "<<<<<<<<<<<<<<<<<<<<<<");
+    // "external_id": "payment-link-example",
+    // "amount": 100000,
+    // "description": "Invoice Demo #123",
+    // "invoice_duration": 86400,
+    // "customer": {
+    //   "given_names": "roihan",
+    //   "surname": "s",
+    //   "email": "pro.roihan@gmail.com",
+    //   "mobile_number": "+6281224642373",
+
+    try {
+      const { data } = await axios({
+        method: "POST",
+        url: "https://api.xendit.co/v2/invoices",
+        headers: {
+          Authorization: "Basic eG5kX2RldmVsb3BtZW50X2lCbmptS0tvQXAyNmE1RkI5S2VrVmZ2TVh5U0E5MDhnNE9VdFBOSVZYeld0dW5IendXU3JGTTM5RldOQ0Y6",
+          "Content-Type": "application/json",
+          Cookie: "incap_ses_7267_2182539=g/IuKB7bunLB79SvQJLZZD97A2QAAAAAbYodfSs3YwY22cd4EYpSuQ==; nlbi_2182539=4njYCcyzmBpQlmiMNAqKSgAAAABu1mNFR3H5eOyynsWHRFRm",
+        },
+        data: {
+          external_id: transactionId,
+          amount: getTransactionById.totalPrice,
+          description: "Invoice Demo #123",
+          invoice_duration: 86400,
+          customer: {
+            given_names: getTransactionById.Customer.username,
+            surname: "s",
+            email: getTransactionById.Customer.email,
+            mobile_number: "+6281224642373",
+          },
+          customer_notification_preference: {
+            invoice_created: ["whatsapp", "sms", "email"],
+            invoice_reminder: ["whatsapp", "sms", "email"],
+            invoice_paid: ["whatsapp", "sms", "email"],
+            invoice_expired: ["whatsapp", "sms", "email"],
+          },
+          success_redirect_url: "https://www.google.com",
+          failure_redirect_url: "https://www.google.com",
+          currency: "IDR",
+          // reference_id :
+          items: insertItem,
+          fees: [
+            {
+              type: "ADMIN",
+              value: 5000,
+            },
+          ],
+        },
+      });
+
+      // setFinish(true);
+      // console.log(data);
+      res.status(200).json(data);
+    } catch (err) {
+      console.log(err.response.data);
+      next(err);
+    }
+  }
+
+  static async successPaymentCb(req, res, next) {
+    try {
+      const token = req.headers["x-callback-token"];
+      const transactionId = req.body.external_id;
+      const status = req.body.status;
+      if (status !== "PAID") {
+        throw { name: "invalid-token" };
+      }
+
+      if (token != process.env.CALLBACK_TOKEN_XENDIT) {
+        throw { name: "invalid-token" };
+      }
+
+      const findTrancsaction = await Transaction.findOne({
+        where: {
+          id: transactionId,
+        },
+        include: [
+          { model: Customer, attributes: { exclude: ["password"] } },
+          { model: Barber, attributes: { exclude: ["password"] } },
+        ],
+      });
+      // console.log(findTrancsaction);
+
+      if (!findTrancsaction) {
+        throw { name: "data-not-found" };
+      }
+
+      await Transaction.update(
+        {
+          status: "paid",
+        },
+        {
+          where: {
+            id: transactionId,
+          },
+        }
+      );
+
+      await Customer.update(
+        { lastCut: findTrancsaction.date },
+        {
+          where: {
+            id: findTrancsaction.CustomerId,
+          },
+        }
+      );
+
+      await Barber.update(
+        {
+          activityStatus: "onTheWay",
+        },
+        {
+          where: {
+            id: findTrancsaction.BarberId,
+          },
+        }
+      );
+
+      res.status(201).json({ message: "Payment Successfully" });
     } catch (err) {
       console.log(err);
       next(err);
