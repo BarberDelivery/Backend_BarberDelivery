@@ -33,5 +33,6 @@ function errorHandler(err, req, res, next) {
     res.status(500).json({ message: "Fixing 500 Internal Server Error Problems on Your Own Site" });
   }
 }
+// err.message = File too big
 
 module.exports = errorHandler;

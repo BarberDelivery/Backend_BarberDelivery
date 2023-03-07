@@ -15,8 +15,8 @@ router.post(`/success-payment`, customerMainController.successPaymentCb);
 // router.get(`failed-payment/:transactionId`, customerMainController.failedPaymentCb);
 
 router.use(customerAuthentication);
-router.get("/detail", customerMainController.getCustomerById); //
-router.post("/upload-image", upload.single("image"), customerMainController.uploadImage); //
+router.get("/detail", customerMainController.getCustomerById); //O
+router.post("/upload-image", upload.single("image"), customerMainController.uploadImage); //O
 router.get("/order/services", customerMainController.getAllService);
 router.get("/order/barber", customerMainController.getAllBarber);
 router.get("/order/barber/:barberId", customerMainController.getBarberById);
@@ -27,6 +27,6 @@ router.patch("/order/payment", customerMainController.successPayment);
 router.patch("/rate", customerMainController.rateBarber);
 router.get("/order/schedule", customerMainController.getAllSchedule);
 router.get("/catalogue", customerMainController.getAllCatalogue);
-router.post("/payment/:transactionId", customerMainController.paymentByCustomerId); //
+router.post("/payment/:transactionId", customerMainController.paymentByCustomerId); //O
 
 module.exports = router;
