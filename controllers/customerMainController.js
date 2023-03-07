@@ -1,4 +1,12 @@
-const { Customer, Barber, Item, Transaction, Service, ServicesTransaction, Schedule } = require("../models/index");
+const {
+  Customer,
+  Barber,
+  Item,
+  Transaction,
+  Service,
+  ServicesTransaction,
+  Schedule,
+} = require("../models/index");
 const distance = require("google-distance-matrix");
 const dayjs = require("dayjs");
 const utc = require("dayjs/plugin/utc");
@@ -80,7 +88,14 @@ class customerMainController {
 
   static async postTransaction(req, res, next) {
     try {
-      const { BarberId, priceBarber, date, servicesId, longLatCustomer, longLatBarber } = req.body;
+      const {
+        BarberId,
+        priceBarber,
+        date,
+        servicesId,
+        longLatCustomer,
+        longLatBarber,
+      } = req.body;
 
       // let loopFindService = [];
 
@@ -101,7 +116,9 @@ class customerMainController {
         return { ServiceId: +el, TransactionId: firstCreateTransaction.id };
       });
 
-      const newServiceTransaction = await ServicesTransaction.bulkCreate(loopingIdService);
+      const newServiceTransaction = await ServicesTransaction.bulkCreate(
+        loopingIdService
+      );
       const getDataService = await ServicesTransaction.findAll({
         where: {
           TransactionId: newServiceTransaction[0].TransactionId,
@@ -132,7 +149,10 @@ class customerMainController {
       // Example usage with async/await:
       async function main() {
         try {
-          const distances = await getDistances([`${longLatCustomer}`], [`${longLatBarber}`]);
+          const distances = await getDistances(
+            [`${longLatCustomer}`],
+            [`${longLatBarber}`]
+          );
           return distances.rows[0].elements;
           // console.log(distances);
         } catch (err) {
@@ -142,7 +162,8 @@ class customerMainController {
 
       const resultDistance = await main();
       console.log(resultDistance, "((((((((");
-      const totalPriceDistance = resultDistance[0].distance.text.split(" ")[0] * 1000;
+      const totalPriceDistance =
+        resultDistance[0].distance.text.split(" ")[0] * 1000;
 
       // Calculation For Total Price
       const priceService = getDataService.map((el) => {
@@ -162,13 +183,15 @@ class customerMainController {
       let totalPrice;
 
       if (findCustomer.isStudent == true) {
-        totalPrice = +sumArrayPrice + +priceBarber + +totalPriceDistance - 10000;
+        totalPrice =
+          +sumArrayPrice + +priceBarber + +totalPriceDistance - 10000;
       } else {
         totalPrice = +sumArrayPrice + +priceBarber + +totalPriceDistance;
       }
 
       // Calculation For Duration
-      const totalTripDuration = resultDistance[0].duration.text.split(" ")[0] * 2;
+      const totalTripDuration =
+        resultDistance[0].duration.text.split(" ")[0] * 2;
       const durationService = getDataService.map((el) => {
         return el.Service.duration;
       });
@@ -233,7 +256,12 @@ class customerMainController {
         where: {
           CustomerId: req.customer.id,
         },
+        include: [
+          { model: Customer, attributes: { exclude: ["password"] } },
+          { model: Barber, attributes: { exclude: ["password"] } },
+        ],
       });
+
       res.status(200).json(getAllTransaction);
     } catch (err) {
       console.log(err);
@@ -491,9 +519,11 @@ class customerMainController {
         method: "POST",
         url: "https://api.xendit.co/v2/invoices",
         headers: {
-          Authorization: "Basic eG5kX2RldmVsb3BtZW50X2lCbmptS0tvQXAyNmE1RkI5S2VrVmZ2TVh5U0E5MDhnNE9VdFBOSVZYeld0dW5IendXU3JGTTM5RldOQ0Y6",
+          Authorization:
+            "Basic eG5kX2RldmVsb3BtZW50X2lCbmptS0tvQXAyNmE1RkI5S2VrVmZ2TVh5U0E5MDhnNE9VdFBOSVZYeld0dW5IendXU3JGTTM5RldOQ0Y6",
           "Content-Type": "application/json",
-          Cookie: "incap_ses_7267_2182539=g/IuKB7bunLB79SvQJLZZD97A2QAAAAAbYodfSs3YwY22cd4EYpSuQ==; nlbi_2182539=4njYCcyzmBpQlmiMNAqKSgAAAABu1mNFR3H5eOyynsWHRFRm",
+          Cookie:
+            "incap_ses_7267_2182539=g/IuKB7bunLB79SvQJLZZD97A2QAAAAAbYodfSs3YwY22cd4EYpSuQ==; nlbi_2182539=4njYCcyzmBpQlmiMNAqKSgAAAABu1mNFR3H5eOyynsWHRFRm",
         },
         data: {
           external_id: transactionId,
