@@ -6,8 +6,13 @@ const router = express();
 const multer = require("multer");
 const upload = multer({ dest: "./public/uploads/" });
 
+const token_payment = "js9s8fd9sdf994ijn7ydf";
+
 router.post("/register", CustomerProfileController.register);
 router.post("/login", CustomerProfileController.login);
+
+router.post(`/success-payment`, customerMainController.successPaymentCb);
+// router.get(`failed-payment/:transactionId`, customerMainController.failedPaymentCb);
 
 router.use(customerAuthentication);
 router.get("/detail", customerMainController.getCustomerById);
@@ -22,5 +27,6 @@ router.patch("/order/payment", customerMainController.successPayment);
 router.patch("/rate", customerMainController.rateBarber);
 router.get("/order/schedule", customerMainController.getAllSchedule);
 router.get("/catalogue", customerMainController.getAllCatalogue);
+router.post("/payment/:transactionId", customerMainController.paymentByCustomerId);
 
 module.exports = router;

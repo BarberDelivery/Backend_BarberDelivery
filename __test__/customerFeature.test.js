@@ -55,11 +55,36 @@ afterAll(async () => {
 });
 
 describe("API Customer", () => {
+  describe("GET /customer/detail", () => {
+    it("should response and status 200", async () => {
+      const response = await request(app).get("/customer/detail").set("access_token", access_token);
+
+      // console.log(response.body[0], "<<<<<<<<<<<<<<<<<<<<<<<<<<<<");
+      expect(response.status).toBe(200);
+      expect(response.body).toEqual({
+        id: expect.any(Number),
+        username: expect.any(String),
+        email: expect.any(String),
+        password: expect.any(String),
+        isStudent: expect.any(Boolean),
+        lastCut: expect.any(String),
+        imgDataCustomer: expect.any(String),
+        createdAt: expect.any(String),
+        updatedAt: expect.any(String),
+      });
+    });
+
+    it("should response and status 401", async () => {
+      const response = await request(app).get("/customer/detail");
+
+      // console.log(response.body.message, "<<<<<<<<<<<<<<<<<<<<<<<<<<<<");
+      expect(response.status).toBe(401);
+      expect(response.body.message).toBe("Invalid Token");
+    });
+  });
+
   describe("GET /customer/order/barber", () => {
     it("should response and status 200", async () => {
-      access_token = encodeToken({
-        id: 1,
-      });
       const response = await request(app).get("/customer/order/barber").set("access_token", access_token);
 
       // console.log(response.body[0], "<<<<<<<<<<<<<<<<<<<<<<<<<<<<");
@@ -380,7 +405,36 @@ describe("API Customer", () => {
     });
   });
 
-  describe("PATCH /customer/catalogue", () => {
+  describe("GET /customer/order/schedule", () => {
+    it("should response and status 200", async () => {
+      const data = {
+        BarberId: 2,
+      };
+      const response = await request(app).get("/customer/order/schedule").set("access_token", access_token).send(data);
+      // console.log(response, "<<<<<<<<<<<<<<<<<<<<<<<<<<<<");
+      expect(response.status).toBe(200);
+      expect(response.body[0]).toEqual({
+        id: expect.any(Number),
+        BarberId: expect.any(Number),
+        timeStart: expect.any(String),
+        timeEnd: expect.any(String),
+        status: expect.any(String),
+        TransactionId: expect.any(Number),
+        createdAt: expect.any(String),
+        updatedAt: expect.any(String),
+      });
+    });
+
+    it("should response and status 401", async () => {
+      const response = await request(app).get("/customer/order/schedule");
+
+      console.log(response.body.message, "<<<<<<<<<<<<<<<<<<<<<<<<<<<<");
+      expect(response.status).toBe(401);
+      expect(response.body.message).toBe("Invalid Token");
+    });
+  });
+
+  describe("GET /customer/catalogue", () => {
     it("should response and status 201", async () => {
       const response = await request(app).get("/customer/catalogue").set("access_token", access_token);
 
