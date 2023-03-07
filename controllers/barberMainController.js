@@ -100,6 +100,7 @@ class barberMainController {
         where: {
           BarberId: req.barber.id,
         },
+        include: [{ model: Customer }],
       });
 
       res.status(200).json(transactions);
