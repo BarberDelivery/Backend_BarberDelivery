@@ -49,6 +49,27 @@ class barberMainController {
     }
   }
 
+  static async getBarberById(req, res, next) {
+    try {
+      const dataBarber = await Barber.findOne({
+        where: {
+          id: req.barber.id,
+        },
+      });
+
+      if (!dataBarber) {
+        throw { name: "data-not-found" };
+      }
+
+      // console.log(dataBarber);
+
+      res.status(200).json(dataBarber);
+    } catch (err) {
+      console.log(err);
+      next(err);
+    }
+  }
+
   // BARBER
   static async patchActivityStatus(req, res, next) {
     try {

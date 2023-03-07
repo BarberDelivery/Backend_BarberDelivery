@@ -12,5 +12,6 @@ router.get("/transaction/:transactionId", barberMainController.getTransactionByI
 router.patch("/activitystatus", barberMainController.patchActivityStatus);
 router.patch("/transaction/:transactionId", barberMainController.patchTransactionStatus);
 router.patch("/schedule/:scheduleId", barberMainController.patchSchedule);
+router.get("/barber-profile", barberMainController.getBarberById);
 
 module.exports = router;
