@@ -124,6 +124,7 @@ describe("API Customer", () => {
 
       const response = await request(app).post("/admin/login").send(customerLoginData);
       access_token = response.body.access_token;
+      console.log(response.body.access_token);
       expect(response.status).toBe(200);
       expect(response.body).toHaveProperty("access_token", expect.any(String));
       expect(response.body).toHaveProperty("sendUsernameForClient", expect.any(String));
@@ -169,276 +170,374 @@ describe("API Customer", () => {
     });
   });
 
-  // describe("GET /admin/customer", () => {
-  //   it("should response and status 200", async () => {
-  //     access_token = encodeToken({
-  //       id: 1,
-  //     });
-  //     const response = await request(app).get("/admin/customer").set("access_token", access_token);
+  describe("GET /admin/customer", () => {
+    it("should response and status 200", async () => {
+      const response = await request(app).get("/admin/customer").set("access_token", access_token);
 
-  //     // console.log(response.body[0], "<<<<<<<<<<<<<<<<<<<<<<<<<<<<");
-  //     expect(response.status).toBe(200);
-  //     expect(response.body[0]).toEqual({
-  //       id: expect.any(Number),
-  //       email: expect.any(String),
-  //       username: expect.any(String),
-  //       password: expect.any(String),
-  //       isStudent: expect.any(Boolean),
-  //       lastCut: expect.any(String),
-  //       imgDataCustomer: expect.any(String),
-  //       createdAt: expect.any(String),
-  //       updatedAt: expect.any(String),
-  //     });
-  //   });
-  // });
+      // console.log(response.body[0], "<<<<<<<<<<<<<<<<<<<<<<<<<<<<");
+      expect(response.status).toBe(200);
+      expect(response.body[0]).toEqual({
+        id: expect.any(Number),
+        email: expect.any(String),
+        username: expect.any(String),
+        password: expect.any(String),
+        isStudent: expect.any(Boolean),
+        lastCut: expect.any(String),
+        imgDataCustomer: expect.any(String),
+        createdAt: expect.any(String),
+        updatedAt: expect.any(String),
+      });
+    });
 
-  // describe("delete /admin/customer/:customerId", () => {
-  //   it("should response and status 200", async () => {
-  //     const response = await request(app).delete("/admin/customer/2").set("access_token", access_token);
+    it("should response and status 401", async () => {
+      const response = await request(app).get("/admin/customer");
 
-  //     // console.log(response.body[0], "<<<<<<<<<<<<<<<<<<<<<<<<<<<<");
-  //     expect(response.status).toBe(200);
-  //     expect(response.body.message).toBe("Delete successfully");
-  //   });
+      // console.log(response.body[0], "<<<<<<<<<<<<<<<<<<<<<<<<<<<<");
+      expect(response.body.message).toBe("Invalid Token");
+      expect(response.status).toBe(401);
+    });
+  });
 
-  //   it("should response and status 404", async () => {
-  //     const response = await request(app).delete("/admin/customer/99").set("access_token", access_token);
+  describe("delete /admin/customer/:customerId", () => {
+    it("should response and status 200", async () => {
+      const response = await request(app).delete("/admin/customer/1").set("access_token", access_token);
 
-  //     // console.log(response.body[0], "<<<<<<<<<<<<<<<<<<<<<<<<<<<<");
-  //     expect(response.status).toBe(404);
-  //     expect(response.body.message).toBe("Data not found");
-  //   });
-  // });
+      // console.log(response.body[0], "<<<<<<<<<<<<<<<<<<<<<<<<<<<<");
+      expect(response.status).toBe(200);
+      expect(response.body.message).toBe("Delete successfully");
+    });
 
-  // describe("patch /admin/customer/isStudent/:customerId", () => {
-  //   it("should response and status 200", async () => {
-  //     const response = await request(app).patch("/admin/customer/isStudent/1").set("access_token", access_token);
+    it("should response and status 404", async () => {
+      const response = await request(app).delete("/admin/customer/99").set("access_token", access_token);
 
-  //     // console.log(response.body[0], "<<<<<<<<<<<<<<<<<<<<<<<<<<<<");
-  //     expect(response.status).toBe(200);
-  //     expect(response.body.message).toBe("Update isStudent Successfuly");
-  //   });
+      // console.log(response.body[0], "<<<<<<<<<<<<<<<<<<<<<<<<<<<<");
+      expect(response.status).toBe(404);
+      expect(response.body.message).toBe("Data not found");
+    });
 
-  //   it("should response and status 404", async () => {
-  //     const response = await request(app).patch("/admin/customer/isStudent/9999").set("access_token", access_token);
+    it("should response and status 401", async () => {
+      const response = await request(app).delete("/admin/customer/99");
 
-  //     // console.log(response.body[0], "<<<<<<<<<<<<<<<<<<<<<<<<<<<<");
-  //     expect(response.status).toBe(404);
-  //     expect(response.body.message).toBe("Data not found");
-  //   });
-  // });
+      // console.log(response.body[0], "<<<<<<<<<<<<<<<<<<<<<<<<<<<<");
+      expect(response.body.message).toBe("Invalid Token");
+      expect(response.status).toBe(401);
+    });
+  });
 
-  // describe("POST /admin/barber", () => {
-  //   it("should login and response 200", async () => {
-  //     const postBarber = {
-  //       username: "tayuya",
-  //       email: "tayuya@gmail.com",
-  //       password: "12345678",
-  //       yearOfExperience: 4,
-  //       description: "Lorem ipsum",
-  //       longLatBarber: "-6.2601995872593745, 106.78085916408212",
-  //       profileImage: "https://titlecitybarbers.com/assets/static/dany.7474da0.314044490d04151a74fee4f20b56d7ab.jpg",
-  //     };
+  describe("patch /admin/customer/isStudent/:customerId", () => {
+    it("should response and status 200", async () => {
+      const response = await request(app).patch("/admin/customer/isStudent/2").set("access_token", access_token);
 
-  //     const response = await request(app).post("/admin/barber").send(postBarber);
+      // console.log(response.body[0], "<<<<<<<<<<<<<<<<<<<<<<<<<<<<");
+      expect(response.status).toBe(200);
+      expect(response.body.message).toBe("Update isStudent Successfuly");
+    });
 
-  //     expect(response.status).toBe(201);
-  //     expect(response.body).toEqual({
-  //       id: expect.any(Number),
-  //       username: expect.any(String),
-  //       email: expect.any(String),
-  //       password: expect.any(String),
-  //       activityStatus: expect.any(String),
-  //       yearOfExperience: expect.any(Number),
-  //       rating: expect.any(Number),
-  //       price: null,
-  //       description: expect.any(String),
-  //       longLatBarber: expect.any(String),
-  //       profileImage: expect.any(String),
-  //       createdAt: expect.any(String),
-  //       updatedAt: expect.any(String),
-  //     });
-  //   });
+    it("should response and status 404", async () => {
+      const response = await request(app).patch("/admin/customer/isStudent/9999").set("access_token", access_token);
 
-  //   // Username null
-  //   it("should login and response 200", async () => {
-  //     const dataBarber = {
-  //       email: "tayuya@gmail.com",
-  //       password: "12345678",
-  //     };
+      // console.log(response.body[0], "<<<<<<<<<<<<<<<<<<<<<<<<<<<<");
+      expect(response.status).toBe(404);
+      expect(response.body.message).toBe("Data not found");
+    });
 
-  //     const response = await request(app).post("/admin/barber").send(dataBarber);
+    it("should response and status 401", async () => {
+      const response = await request(app).patch("/admin/customer/isStudent/1");
 
-  //     expect(response.status).toBe(400);
-  //     expect(response.body.message[0]).toBe("Username can't be null");
-  //   });
+      // console.log(response.body[0], "<<<<<<<<<<<<<<<<<<<<<<<<<<<<");
+      expect(response.body.message).toBe("Invalid Token");
+      expect(response.status).toBe(401);
+    });
+  });
 
-  //   // Email null
-  //   it("should login and response 200", async () => {
-  //     const dataBarber = {
-  //       username: "tayuya",
-  //       password: "12345678",
-  //     };
+  describe("POST /admin/barber", () => {
+    it("should login and response 200", async () => {
+      const postBarber = {
+        username: "tayuya",
+        email: "tayuya@gmail.com",
+        password: "12345678",
+        yearOfExperience: 4,
+        description: "Lorem ipsum",
+        longLatBarber: "-6.2601995872593745, 106.78085916408212",
+        profileImage: "https://titlecitybarbers.com/assets/static/dany.7474da0.314044490d04151a74fee4f20b56d7ab.jpg",
+      };
 
-  //     const response = await request(app).post("/admin/barber").send(dataBarber);
+      const response = await request(app).post("/admin/barber").send(postBarber).set("access_token", access_token);
 
-  //     expect(response.status).toBe(400);
-  //     expect(response.body.message[0]).toBe("Email can't be null");
-  //   });
+      expect(response.status).toBe(201);
+      expect(response.body).toEqual({
+        id: expect.any(Number),
+        username: expect.any(String),
+        email: expect.any(String),
+        password: expect.any(String),
+        activityStatus: expect.any(String),
+        yearOfExperience: expect.any(Number),
+        rating: expect.any(Number),
+        price: null,
+        description: expect.any(String),
+        longLatBarber: expect.any(String),
+        profileImage: expect.any(String),
+        createdAt: expect.any(String),
+        updatedAt: expect.any(String),
+      });
+    });
 
-  //   // Password null
-  //   it("should login and response 200", async () => {
-  //     const dataBarber = {
-  //       username: "tayuya",
-  //       email: "tayuya@gmail.com",
-  //     };
+    // Username null
+    it("should login and response 200", async () => {
+      const dataBarber = {
+        email: "tayuya@gmail.com",
+        password: "12345678",
+      };
 
-  //     const response = await request(app).post("/admin/barber").send(dataBarber);
+      const response = await request(app).post("/admin/barber").send(dataBarber).set("access_token", access_token);
 
-  //     expect(response.status).toBe(400);
-  //     expect(response.body.message[0]).toBe("Password can't be null");
-  //   });
-  // });
+      expect(response.status).toBe(400);
+      expect(response.body.message[0]).toBe("Username can't be null");
+    });
 
-  // describe("GET /admin/barber", () => {
-  //   it("should response and status 200", async () => {
-  //     access_token = encodeToken({
-  //       id: 1,
-  //     });
-  //     const response = await request(app).get("/admin/barber").set("access_token", access_token);
+    // Email null
+    it("should login and response 200", async () => {
+      const dataBarber = {
+        username: "tayuya",
+        password: "12345678",
+      };
 
-  //     // console.log(response.body[0], "<<<<<<<<<<<<<<<<<<<<<<<<<<<<");
-  //     expect(response.status).toBe(200);
-  //     expect(response.body[0]).toEqual({
-  //       id: expect.any(Number),
-  //       username: expect.any(String),
-  //       email: expect.any(String),
-  //       password: expect.any(String),
-  //       activityStatus: expect.any(String),
-  //       yearOfExperience: expect.any(Number),
-  //       rating: expect.any(Number),
-  //       price: null,
-  //       description: expect.any(String),
-  //       longLatBarber: expect.any(String),
-  //       profileImage: expect.any(String),
-  //       createdAt: expect.any(String),
-  //       updatedAt: expect.any(String),
-  //     });
-  //   });
-  // });
+      const response = await request(app).post("/admin/barber").send(dataBarber).set("access_token", access_token);
 
-  // describe("GET /admin/barber/:barberId", () => {
-  //   it("should response and status 200", async () => {
-  //     const response = await request(app).get("/admin/barber/1").set("access_token", access_token);
+      expect(response.status).toBe(400);
+      expect(response.body.message[0]).toBe("Email can't be null");
+    });
 
-  //     // console.log(response.body[0], "<<<<<<<<<<<<<<<<<<<<<<<<<<<<");
-  //     expect(response.status).toBe(200);
+    // Password null
+    it("should login and response 200", async () => {
+      const dataBarber = {
+        username: "tayuya",
+        email: "tayuya@gmail.com",
+      };
 
-  //     expect(response.body).toEqual({
-  //       id: expect.any(Number),
-  //       username: expect.any(String),
-  //       email: expect.any(String),
-  //       password: expect.any(String),
-  //       activityStatus: expect.any(String),
-  //       yearOfExperience: expect.any(Number),
-  //       rating: expect.any(Number),
-  //       price: null,
-  //       description: expect.any(String),
-  //       longLatBarber: expect.any(String),
-  //       profileImage: expect.any(String),
-  //       createdAt: expect.any(String),
-  //       updatedAt: expect.any(String),
-  //     });
-  //   });
+      const response = await request(app).post("/admin/barber").send(dataBarber).set("access_token", access_token);
 
-  //   it("should response and status 404", async () => {
-  //     const response = await request(app).get("/admin/barber/99").set("access_token", access_token);
+      expect(response.status).toBe(400);
+      expect(response.body.message[0]).toBe("Password can't be null");
+    });
 
-  //     // console.log(response.body.message, "<<<<<<<<<<<<<<<<<<<<<<<<<<<<");
-  //     expect(response.status).toBe(404);
-  //     expect(response.body.message).toBe("Data not found");
-  //   });
-  // });
+    it("should response and status 401", async () => {
+      const postBarber = {
+        username: "tayuya",
+        email: "tayuya@gmail.com",
+        password: "12345678",
+        yearOfExperience: 4,
+        description: "Lorem ipsum",
+        longLatBarber: "-6.2601995872593745, 106.78085916408212",
+        profileImage: "https://titlecitybarbers.com/assets/static/dany.7474da0.314044490d04151a74fee4f20b56d7ab.jpg",
+      };
 
-  // describe("PUT /admin/barber/1", () => {
-  //   it("should login and response 200", async () => {
-  //     const postBarber = {
-  //       username: "tayuya l",
-  //       email: "tayuya@gmail.com",
-  //       password: "12345678",
-  //       yearOfExperience: 4,
-  //       description: "Lorem ipsum",
-  //       longLatBarber: "-6.2601995872593745, 106.78085916408212",
-  //       profileImage: "https://titlecitybarbers.com/assets/static/dany.7474da0.314044490d04151a74fee4f20b56d7ab.jpg",
-  //     };
+      const response = await request(app).post("/admin/barber").send(postBarber);
 
-  //     const response = await request(app).put("/admin/barber/1").send(postBarber);
-  //     console.log(response);
+      // console.log(response.body[0], "<<<<<<<<<<<<<<<<<<<<<<<<<<<<");
+      expect(response.body.message).toBe("Invalid Token");
+      expect(response.status).toBe(401);
+    });
+  });
 
-  //     expect(response.status).toBe(200);
-  //     expect(response.body).toEqual({
-  //       id: expect.any(Number),
-  //       username: expect.any(String),
-  //       email: expect.any(String),
-  //       password: expect.any(String),
-  //       activityStatus: expect.any(String),
-  //       yearOfExperience: expect.any(Number),
-  //       rating: expect.any(Number),
-  //       price: null,
-  //       description: expect.any(String),
-  //       longLatBarber: expect.any(String),
-  //       profileImage: expect.any(String),
-  //       createdAt: expect.any(String),
-  //       updatedAt: expect.any(String),
-  //     });
-  //   });
-  // });
+  describe("GET /admin/barber", () => {
+    it("should response and status 200", async () => {
+      const response = await request(app).get("/admin/barber").set("access_token", access_token);
 
-  // describe("POST /admin/catalogue", () => {
-  //   it("should login and response 200", async () => {
-  //     const postCatalogue = {
-  //       image: "https://titlecitybarbers.com/assets/static/dany.7474da0.314044490d04151a74fee4f20b56d7ab.jpg",
-  //     };
+      // console.log(response.body[0], "<<<<<<<<<<<<<<<<<<<<<<<<<<<<");
+      expect(response.status).toBe(200);
+      expect(response.body[0]).toEqual({
+        id: expect.any(Number),
+        username: expect.any(String),
+        email: expect.any(String),
+        password: expect.any(String),
+        activityStatus: expect.any(String),
+        yearOfExperience: expect.any(Number),
+        rating: expect.any(Number),
+        price: null,
+        description: expect.any(String),
+        longLatBarber: expect.any(String),
+        profileImage: expect.any(String),
+        createdAt: expect.any(String),
+        updatedAt: expect.any(String),
+      });
+    });
 
-  //     const response = await request(app).post("/admin/catalogue").send(postCatalogue);
-  //     catalogueId = response.body._id;
-  //     expect(response.status).toBe(201);
-  //     expect(response.body).toEqual({
-  //       _id: expect.any(String),
-  //       image: expect.any(String),
-  //     });
-  //   });
-  // });
+    it("should response and status 401", async () => {
+      const response = await request(app).get("/admin/barber");
 
-  // describe("GET /admin/catalogue", () => {
-  //   it("should response and status 200", async () => {
-  //     const response = await request(app).get("/admin/catalogue").set("access_token", access_token);
+      // console.log(response.body[0], "<<<<<<<<<<<<<<<<<<<<<<<<<<<<");
+      expect(response.body.message).toBe("Invalid Token");
+      expect(response.status).toBe(401);
+    });
+  });
 
-  //     // console.log(response.body[0], "<<<<<<<<<<<<<<<<<<<<<<<<<<<<");
-  //     expect(response.status).toBe(200);
+  describe("GET /admin/barber/:barberId", () => {
+    it("should response and status 200", async () => {
+      const response = await request(app).get("/admin/barber/1").set("access_token", access_token);
 
-  //     expect(response.body[0]).toEqual({
-  //       _id: expect.any(String),
-  //       image: expect.any(String),
-  //     });
-  //   });
-  // });
+      // console.log(response.body[0], "<<<<<<<<<<<<<<<<<<<<<<<<<<<<");
+      expect(response.status).toBe(200);
 
-  // describe("delete /admin/catalogue/:catalogueId", () => {
-  //   it("should response and status 200", async () => {
-  //     const response = await request(app).delete(`/admin/catalogue/${catalogueId}`).set("access_token", access_token);
+      expect(response.body).toEqual({
+        id: expect.any(Number),
+        username: expect.any(String),
+        email: expect.any(String),
+        password: expect.any(String),
+        activityStatus: expect.any(String),
+        yearOfExperience: expect.any(Number),
+        rating: expect.any(Number),
+        price: null,
+        description: expect.any(String),
+        longLatBarber: expect.any(String),
+        profileImage: expect.any(String),
+        createdAt: expect.any(String),
+        updatedAt: expect.any(String),
+      });
+    });
 
-  //     // console.log(response.body[0], "<<<<<<<<<<<<<<<<<<<<<<<<<<<<");
-  //     expect(response.status).toBe(200);
-  //     expect(response.body.message).toBe("Delete Catalogue Successfuly");
-  //   });
+    it("should response and status 404", async () => {
+      const response = await request(app).get("/admin/barber/99").set("access_token", access_token);
 
-  //   it("should response and status 404", async () => {
-  //     const response = await request(app).delete(`/admin/catalogue/${catalogueId}`).set("access_token", access_token);
+      // console.log(response.body.message, "<<<<<<<<<<<<<<<<<<<<<<<<<<<<");
+      expect(response.status).toBe(404);
+      expect(response.body.message).toBe("Data not found");
+    });
 
-  //     // console.log(response.body[0], "<<<<<<<<<<<<<<<<<<<<<<<<<<<<");
-  //     expect(response.status).toBe(404);
-  //     expect(response.body.message).toBe("Data not found");
-  //   });
-  // });
+    it("should response and status 401", async () => {
+      const response = await request(app).get("/admin/barber/1");
+
+      // console.log(response.body[0], "<<<<<<<<<<<<<<<<<<<<<<<<<<<<");
+      expect(response.body.message).toBe("Invalid Token");
+      expect(response.status).toBe(401);
+    });
+  });
+
+  describe("PUT /admin/barber/1", () => {
+    it("should login and response 200", async () => {
+      const postBarber = {
+        username: "tayuya l",
+        email: "tayuya@gmail.com",
+        password: "12345678",
+        yearOfExperience: 4,
+        description: "Lorem ipsum",
+        longLatBarber: "-6.2601995872593745, 106.78085916408212",
+        profileImage: "https://titlecitybarbers.com/assets/static/dany.7474da0.314044490d04151a74fee4f20b56d7ab.jpg",
+      };
+
+      const response = await request(app).put("/admin/barber/1").send(postBarber).set("access_token", access_token);
+      console.log(response);
+
+      expect(response.status).toBe(200);
+      expect(response.body).toEqual({
+        id: expect.any(Number),
+        username: expect.any(String),
+        email: expect.any(String),
+        password: expect.any(String),
+        activityStatus: expect.any(String),
+        yearOfExperience: expect.any(Number),
+        rating: expect.any(Number),
+        price: null,
+        description: expect.any(String),
+        longLatBarber: expect.any(String),
+        profileImage: expect.any(String),
+        createdAt: expect.any(String),
+        updatedAt: expect.any(String),
+      });
+    });
+
+    it("should response and status 401", async () => {
+      const postBarber = {
+        username: "tayuya l",
+        email: "tayuya@gmail.com",
+        password: "12345678",
+        yearOfExperience: 4,
+        description: "Lorem ipsum",
+        longLatBarber: "-6.2601995872593745, 106.78085916408212",
+        profileImage: "https://titlecitybarbers.com/assets/static/dany.7474da0.314044490d04151a74fee4f20b56d7ab.jpg",
+      };
+
+      const response = await request(app).put("/admin/barber/1").send(postBarber);
+
+      // console.log(response.body[0], "<<<<<<<<<<<<<<<<<<<<<<<<<<<<");
+      expect(response.body.message).toBe("Invalid Token");
+      expect(response.status).toBe(401);
+    });
+  });
+
+  describe("POST /admin/catalogue", () => {
+    it("should login and response 200", async () => {
+      const postCatalogue = {
+        image: "https://titlecitybarbers.com/assets/static/dany.7474da0.314044490d04151a74fee4f20b56d7ab.jpg",
+      };
+
+      const response = await request(app).post("/admin/catalogue").send(postCatalogue).set("access_token", access_token);
+      catalogueId = response.body._id;
+      expect(response.status).toBe(201);
+      expect(response.body).toEqual({
+        _id: expect.any(String),
+        image: expect.any(String),
+      });
+    });
+
+    it("should response and status 401", async () => {
+      const postCatalogue = {
+        image: "https://titlecitybarbers.com/assets/static/dany.7474da0.314044490d04151a74fee4f20b56d7ab.jpg",
+      };
+
+      const response = await request(app).post("/admin/catalogue").send(postCatalogue);
+
+      // console.log(response.body[0], "<<<<<<<<<<<<<<<<<<<<<<<<<<<<");
+      expect(response.body.message).toBe("Invalid Token");
+      expect(response.status).toBe(401);
+    });
+  });
+
+  describe("GET /admin/catalogue", () => {
+    it("should response and status 200", async () => {
+      const response = await request(app).get("/admin/catalogue").set("access_token", access_token);
+
+      // console.log(response.body[0], "<<<<<<<<<<<<<<<<<<<<<<<<<<<<");
+      expect(response.status).toBe(200);
+
+      expect(response.body[0]).toEqual({
+        _id: expect.any(String),
+        image: expect.any(String),
+      });
+    });
+
+    it("should response and status 401", async () => {
+      const response = await request(app).get("/admin/catalogue");
+
+      // console.log(response.body[0], "<<<<<<<<<<<<<<<<<<<<<<<<<<<<");
+      expect(response.body.message).toBe("Invalid Token");
+      expect(response.status).toBe(401);
+    });
+  });
+
+  describe("delete /admin/catalogue/:catalogueId", () => {
+    it("should response and status 200", async () => {
+      const response = await request(app).delete(`/admin/catalogue/${catalogueId}`).set("access_token", access_token);
+
+      // console.log(response.body[0], "<<<<<<<<<<<<<<<<<<<<<<<<<<<<");
+      expect(response.status).toBe(200);
+      expect(response.body.message).toBe("Delete Catalogue Successfuly");
+    });
+
+    it("should response and status 404", async () => {
+      const response = await request(app).delete(`/admin/catalogue/${catalogueId}`).set("access_token", access_token);
+
+      // console.log(response.body[0], "<<<<<<<<<<<<<<<<<<<<<<<<<<<<");
+      expect(response.status).toBe(404);
+      expect(response.body.message).toBe("Data not found");
+    });
+
+    it("should response and status 401", async () => {
+      const response = await request(app).delete(`/admin/catalogue/${catalogueId}`);
+
+      // console.log(response.body[0], "<<<<<<<<<<<<<<<<<<<<<<<<<<<<");
+      expect(response.body.message).toBe("Invalid Token");
+      expect(response.status).toBe(401);
+    });
+  });
 });

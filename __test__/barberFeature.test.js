@@ -63,7 +63,7 @@ afterAll(async () => {
   await sequelize.queryInterface.bulkDelete("Schedules", null, { truncate: true, restartIdentity: true, cascade: true });
 });
 
-describe.skip("API Barber", () => {
+describe("API Barber", () => {
   describe("GET /barber/transaction", () => {
     it("should response and status 200", async () => {
       const response = await request(app).get("/barber/transaction").set("access_token", access_token);

@@ -54,7 +54,7 @@ afterAll(async () => {
   await sequelize.queryInterface.bulkDelete("Schedules", null, { truncate: true, restartIdentity: true, cascade: true });
 });
 
-describe.skip("API Customer", () => {
+describe("API Customer", () => {
   describe("GET /customer/order/barber", () => {
     it("should response and status 200", async () => {
       access_token = encodeToken({
