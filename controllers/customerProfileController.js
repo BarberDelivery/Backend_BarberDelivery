@@ -12,7 +12,6 @@ class CustomerProfileController {
     // res.status(201).json("Berhasil");
     try {
       const { username, email, password } = req.body;
-      console.log(req.body);
       let customerRegisterData = await Customer.create({
         username,
         email,
