@@ -16,7 +16,7 @@ const customerAuthentication = async (req, res, next) => {
     if (!dataCustomer) {
       throw { name: "invalid-token" };
     }
-
+    console.log(dataCustomer.id, "??????????");
     req.customer = dataCustomer;
 
     next();

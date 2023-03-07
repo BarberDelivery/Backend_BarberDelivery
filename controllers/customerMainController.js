@@ -13,6 +13,22 @@ dayjs().locale("de").format(); // use locale in a specific instance
 dayjs().format();
 
 class customerMainController {
+  static async getCustomerById(req, res, next) {
+    try {
+      console.log(req.customer.id, "<<<<<<<<<");
+      const dataCustomer = await Customer.findOne({
+        where: {
+          id: req.customer.id,
+        },
+      });
+      console.log(dataCustomer, "OOOOO");
+      res.status(200).json(dataCustomer);
+    } catch (err) {
+      console.log(err);
+      next(err);
+    }
+  }
+
   static async getAllBarber(req, res, next) {
     try {
       const dataListBarber = await Barber.findAll({

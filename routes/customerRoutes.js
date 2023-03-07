@@ -10,6 +10,7 @@ router.post("/register", CustomerProfileController.register);
 router.post("/login", CustomerProfileController.login);
 
 router.use(customerAuthentication);
+router.get("/detail", customerMainController.getCustomerById);
 router.post("/upload-image", upload.single("image"), customerMainController.uploadImage);
 router.get("/order/services", customerMainController.getAllService);
 router.get("/order/barber", customerMainController.getAllBarber);

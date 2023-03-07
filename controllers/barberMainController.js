@@ -5,12 +5,8 @@ const { Customer, Barber, Item, Transaction, Service, ServicesTransaction, Sched
 class barberMainController {
   static async login(req, res, next) {
     try {
-      const { username, email, password } = req.body;
+      const { email, password } = req.body;
       //   console.log(email, "<<<<<<<<<<<<<<<");
-
-      if (!username) {
-        throw { name: "username-required" };
-      }
 
       if (!email) {
         throw { name: "email-required" };
@@ -22,7 +18,6 @@ class barberMainController {
 
       let barberLogin = await Barber.findOne({
         where: {
-          username: username,
           email: email,
         },
       });

@@ -22,11 +22,10 @@ afterAll(async () => {
   await sequelize.queryInterface.bulkDelete("Barbers", null, { truncate: true, restartIndentity: true, cascade: true });
 });
 
-describe.skip("API customer", () => {
+describe("API customer", () => {
   describe("POST /barber/login", () => {
     it("should login and response 200", async () => {
       const barberLoginData = {
-        username: "alfian",
         email: "alfian@gmail.com",
         password: "12345678",
       };
@@ -36,20 +35,6 @@ describe.skip("API customer", () => {
       expect(response.status).toBe(200);
       expect(response.body).toHaveProperty("access_token", expect.any(String));
       expect(response.body).toHaveProperty("sendUsernameForBarber", expect.any(String));
-    });
-
-    // Username Invalid
-    it("should login and response 200", async () => {
-      const barberLoginData = {
-        username: "alfian2",
-        email: "alfian@gmail.com",
-        password: "12345678",
-      };
-
-      const response = await request(app).post("/barber/login").send(barberLoginData);
-
-      expect(response.status).toBe(401);
-      expect(response.body.message).toBe("Email/Password Invalid");
     });
 
     // Email Invalid
@@ -78,19 +63,6 @@ describe.skip("API customer", () => {
 
       expect(response.status).toBe(401);
       expect(response.body.message).toBe("Email/Password Invalid");
-    });
-
-    // Username null
-    it("should login and response 200", async () => {
-      const barberLoginData = {
-        email: "alfian@gmail.com",
-        password: "12345678",
-      };
-
-      const response = await request(app).post("/barber/login").send(barberLoginData);
-
-      expect(response.status).toBe(401);
-      expect(response.body.message).toBe("Username Required");
     });
 
     // Email null
