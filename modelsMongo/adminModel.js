@@ -11,13 +11,13 @@ class Admin {
   static async addAdmin(admin) {
     try {
       if (!admin.username) {
-        throw { name: "username-notNull", message: "username is required" };
+        throw { name: "username-notNull", message: { message: "username is required" } };
       }
       if (!admin.email) {
-        throw { name: "email-notNull", message: "email is required" };
+        throw { name: "email-notNull", message: { message: "email is required" } };
       }
       if (!admin.password) {
-        throw { name: "password-notNull", message: "password is required" };
+        throw { name: "password-notNull", message: { message: "password is required" } };
       }
 
       return this.getCollections().insertOne({

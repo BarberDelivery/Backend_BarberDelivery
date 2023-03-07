@@ -8,19 +8,19 @@ const barberAuthentication = async (req, res, next) => {
     if (!access_token) {
       throw { name: "invalid-token" };
     }
-
     const dataToken = decodeToken(access_token);
 
     const dataBarber = await Barber.findByPk(dataToken.id);
+    console.log(dataBarber.id, "?????????????????????????????????/");
 
     if (!dataBarber) {
       throw { name: "invalid-token" };
     }
 
     req.barber = {
-      id : dataBarber.id,
-      username : dataBarber.username
-    }
+      id: dataBarber.id,
+      username: dataBarber.username,
+    };
 
     next();
   } catch (err) {

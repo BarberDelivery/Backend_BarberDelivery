@@ -26,6 +26,12 @@ class Catalogue {
     }
   }
 
+  static async getByCatalogueId(objectId) {
+    return this.getCollections().findOne({
+      _id: new ObjectId(objectId),
+    });
+  }
+
   static async deleteCatalogueById(objectId) {
     return this.getCollections().deleteOne({
       _id: new ObjectId(objectId),

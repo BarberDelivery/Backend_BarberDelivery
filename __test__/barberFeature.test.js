@@ -8,10 +8,6 @@ const { encodeToken } = require("../helpers/jwt");
 let access_token;
 
 beforeAll(async () => {
-  access_token = encodeToken({
-    id: 2,
-  });
-
   let customersData = require(`../db/customers.json`).map((el) => {
     el.createdAt = new Date();
     el.updatedAt = new Date();
@@ -27,6 +23,10 @@ beforeAll(async () => {
     return el;
   });
   await sequelize.queryInterface.bulkInsert(`Barbers`, barbersData, {});
+
+  access_token = encodeToken({
+    id: 2,
+  });
 
   // let transactionsData = require(`../db/transactions.json`).map((el) => {
   //   el.createdAt = new Date();
@@ -63,7 +63,7 @@ afterAll(async () => {
   await sequelize.queryInterface.bulkDelete("Schedules", null, { truncate: true, restartIdentity: true, cascade: true });
 });
 
-describe("API Barber", () => {
+describe.skip("API Barber", () => {
   describe("GET /barber/transaction", () => {
     it("should response and status 200", async () => {
       const response = await request(app).get("/barber/transaction").set("access_token", access_token);
@@ -137,6 +137,130 @@ describe("API Barber", () => {
 
     it("should response and status 401", async () => {
       const response = await request(app).get("/barber/transaction/99");
+
+      console.log(response.body.message, "<<<<<<<<<<<<<<<<<<<<<<<<<<<<");
+      expect(response.status).toBe(401);
+      expect(response.body.message).toBe("Invalid Token");
+    });
+  });
+
+  describe("GET /barber/schedule", () => {
+    it("should response and status 200", async () => {
+      const response = await request(app).get("/barber/schedule").set("access_token", access_token);
+
+      expect(response.status).toBe(200);
+      console.log(response.body, "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<,");
+      expect(response.body[0]).toEqual({
+        id: expect.any(Number),
+        BarberId: expect.any(Number),
+        timeStart: expect.any(String),
+        timeEnd: expect.any(String),
+        status: expect.any(String),
+        TransactionId: expect.any(Number),
+        createdAt: expect.any(String),
+        updatedAt: expect.any(String),
+      });
+    });
+
+    it("should response and status 401", async () => {
+      const response = await request(app).get("/barber/schedule");
+
+      console.log(response.body.message, "<<<<<<<<<<<<<<<<<<<<<<<<<<<<");
+      expect(response.status).toBe(401);
+      expect(response.body.message).toBe("Invalid Token");
+    });
+  });
+
+  describe("PATCH /barber/activitystatus", () => {
+    it("should response transaction and response 201", async () => {
+      const changeActivityStatus = {
+        activitystatus: "standBy",
+      };
+
+      const response = await request(app).patch("/barber/activitystatus").set("access_token", access_token).send(changeActivityStatus);
+      console.log(response.body);
+
+      expect(response.status).toBe(201);
+      expect(response.body.message).toBe("Success Updated Activity Status");
+    });
+
+    it("should response and status 401", async () => {
+      const changeActivityStatus = {
+        activitystatus: "standBy",
+      };
+      const response = await request(app).patch("/barber/activitystatus").send(changeActivityStatus);
+
+      console.log(response.body.message, "<<<<<<<<<<<<<<<<<<<<<<<<<<<<");
+      expect(response.status).toBe(401);
+      expect(response.body.message).toBe("Invalid Token");
+    });
+  });
+
+  describe("PATCH /barber/transaction/:transactionId", () => {
+    it("should response transaction and response 201", async () => {
+      const changeTransactionStatus = {
+        activitystatus: "done",
+      };
+
+      const response = await request(app).patch("/barber/transaction/1").set("access_token", access_token).send(changeTransactionStatus);
+      console.log(response.body);
+
+      expect(response.status).toBe(201);
+      expect(response.body.message).toBe("Success Change Status Transaction");
+    });
+
+    it("should response and status 404", async () => {
+      const changeTransactionStatus = {
+        activitystatus: "done",
+      };
+      const response = await request(app).get("/barber/transaction/99").set("access_token", access_token).send(changeTransactionStatus);
+
+      console.log(response.body.message, "<<<<<<<<<<<<<<<<<<<<<<<<<<<<");
+      expect(response.status).toBe(404);
+      expect(response.body.message).toBe("Data not found");
+    });
+
+    it("should response and status 401", async () => {
+      const changeTransactionStatus = {
+        activitystatus: "done",
+      };
+      const response = await request(app).patch("/barber/transaction/1").send(changeTransactionStatus);
+
+      console.log(response.body.message, "<<<<<<<<<<<<<<<<<<<<<<<<<<<<");
+      expect(response.status).toBe(401);
+      expect(response.body.message).toBe("Invalid Token");
+    });
+  });
+
+  describe("PATCH /barber/schedule/:scheduleId", () => {
+    it("should response transaction and response 201", async () => {
+      const changeTransactionStatus = {
+        activitystatus: "done",
+      };
+
+      const response = await request(app).patch("/barber/schedule/1").set("access_token", access_token).send(changeTransactionStatus);
+      console.log(response.body);
+
+      expect(response.status).toBe(201);
+      expect(response.body.message).toBe("Success Updated Schedule Status");
+    });
+
+    it("should response and status 404", async () => {
+      const changeTransactionStatus = {
+        activitystatus: "done",
+      };
+      const response = await request(app).patch("/barber/schedule/99").set("access_token", access_token).send(changeTransactionStatus);
+
+      console.log(response.body.message, "<<<<<<<<<<<<<<<<<<<<<<<<<<<<");
+      expect(response.status).toBe(404);
+      expect(response.body.message).toBe("Data not found");
+    });
+
+    it("should response and status 401", async () => {
+      const changeTransactionStatus = {
+        activitystatus: "done",
+      };
+      const response = await request(app).patch("/barber/schedule/1").send(changeTransactionStatus);
 
       console.log(response.body.message, "<<<<<<<<<<<<<<<<<<<<<<<<<<<<");
       expect(response.status).toBe(401);

@@ -70,10 +70,10 @@ class barberMainController {
         }
       );
 
-      res.status(200).json({ message: "Success Updated Activity Status" });
-    } catch (error) {
-      // console.log(error);
-      next(error);
+      res.status(201).json({ message: "Success Updated Activity Status" });
+    } catch (err) {
+      // console.log(err);
+      next(err);
     }
   }
 
@@ -87,8 +87,8 @@ class barberMainController {
       });
 
       res.status(200).json(transactions);
-    } catch (error) {
-      next(error);
+    } catch (err) {
+      next(err);
     }
   }
 
@@ -109,8 +109,8 @@ class barberMainController {
       }
 
       res.status(200).json(transactionById);
-    } catch (error) {
-      next(error);
+    } catch (err) {
+      next(err);
     }
   }
 
@@ -118,6 +118,16 @@ class barberMainController {
     try {
       let { transactionId } = req.params;
       const { status } = req.body;
+
+      const dataTrasaction = await Transaction.findOne({
+        where: {
+          id: transactionId,
+        },
+      });
+
+      if (!dataTrasaction) {
+        throw { name: "data-not-found" };
+      }
 
       const changeStatusTransaction = await Transaction.update(
         {
@@ -131,13 +141,9 @@ class barberMainController {
         }
       );
 
-      if (!changeStatusTransaction) {
-        throw { name: "data-not-found" };
-      }
-
-      res.status(200).json({ message: "Success Change Status Transaction" });
-    } catch (error) {
-      next(error);
+      res.status(201).json({ message: "Success Change Status Transaction" });
+    } catch (err) {
+      next(err);
     }
   }
 
@@ -146,11 +152,11 @@ class barberMainController {
   static async getSchedule(req, res, next) {
     try {
       const schedules = await Schedule.findAll({
-        where: { BarberId: req.barber.id },
+        where: { BarberId: req.barber.id, status: "unfinished" },
       });
       res.status(200).json(schedules);
-    } catch (error) {
-      next(error);
+    } catch (err) {
+      next(err);
     }
   }
 
@@ -181,9 +187,10 @@ class barberMainController {
         }
       );
 
-      res.status(200).json({ message: "Success Updated" });
-    } catch (error) {
-      next(error);
+      res.status(201).json({ message: "Success Updated Schedule Status" });
+    } catch (err) {
+      console.log(err);
+      next(err);
     }
   }
 }

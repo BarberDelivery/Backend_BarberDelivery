@@ -23,9 +23,9 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">52% </span>
+                <span class="strong">56% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>13/25</span>
+                <span class='fraction'>14/25</span>
             </div>
         
             
@@ -44,9 +44,9 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">52% </span>
+                <span class="strong">56% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>13/25</span>
+                <span class='fraction'>14/25</span>
             </div>
         
             
@@ -101,56 +101,56 @@
 <a name='L36'></a><a href='#L36'>36</a>
 <a name='L37'></a><a href='#L37'>37</a>
 <a name='L38'></a><a href='#L38'>38</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">6x</span>
 <span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">6x</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">function errorHandler(err, req, res, next) {
-  <span class="missing-if-branch" title="if path not taken" >I</span>if (err.name === "username-required") {
-<span class="cstat-no" title="statement not covered" >    res.status(400).json({ message: "Username Required" });</span>
-  } else <span class="missing-if-branch" title="if path not taken" >I</span>if (err.name === "email-required") {
-<span class="cstat-no" title="statement not covered" >    res.status(400).json({ message: "Email Required" });</span>
-  } else <span class="missing-if-branch" title="if path not taken" >I</span>if (err.name === "password-required") {
-<span class="cstat-no" title="statement not covered" >    res.status(400).json({ message: "Password Required" });</span>
+  if (err.name === "username-required") {
+    res.status(401).json({ message: "Username Required" });
+  } else if (err.name === "email-required") {
+    res.status(401).json({ message: "Email Required" });
+  } else if (err.name === "password-required") {
+    res.status(401).json({ message: "Password Required" });
   } else <span class="missing-if-branch" title="if path not taken" >I</span>if (err.name === "SequelizeValidationError") {
     let errorData = <span class="cstat-no" title="statement not covered" >err.errors.map(<span class="fstat-no" title="function not covered" >(e</span>l) =&gt; {</span>
 <span class="cstat-no" title="statement not covered" >      return el.message;</span>
     });
 <span class="cstat-no" title="statement not covered" >    res.status(400).json({ message: errorData });</span>
-  } else if (err.name === "data-not-found") {
-    res.status(404).json({
+  } else <span class="missing-if-branch" title="if path not taken" >I</span>if (err.name === "data-not-found") {
+<span class="cstat-no" title="statement not covered" >    res.status(404).json({</span>
       message: "Data not found",
     });
   } else <span class="missing-if-branch" title="if path not taken" >I</span>if (err.name === "SequelizeUniqueConstraintError") {
@@ -164,11 +164,11 @@
     });
   } else <span class="missing-if-branch" title="if path not taken" >I</span>if (err.name === "forbidden") {
 <span class="cstat-no" title="statement not covered" >    res.status(403).json({ message: "This action is only for the admin role" });</span>
-  } else <span class="missing-if-branch" title="if path not taken" >I</span>if (err.name === "invalid-login") {
-<span class="cstat-no" title="statement not covered" >    res.status(401).json({ message: "Email/Password Invalid" });</span>
-  } else if (err.name === "invalid-token" || <span class="branch-1 cbranch-no" title="branch not covered" >err.name === "JsonWebTokenError")</span> {
-    res.status(401).json({ message: "Invalid Token" });
-  } else <span class="missing-if-branch" title="else path not taken" >E</span>{
+  } else if (err.name === "invalid-login") {
+    res.status(401).json({ message: "Email/Password Invalid" });
+  } else <span class="cstat-no" title="statement not covered" ><span class="missing-if-branch" title="else path not taken" >E</span>if (err.name === "invalid-token" || err.name === "JsonWebTokenError") {</span>
+<span class="cstat-no" title="statement not covered" >    res.status(401).json({ message: "Invalid Token" });</span>
+  } else {
 <span class="cstat-no" title="statement not covered" >    res.status(500).json({ message: "Fixing 500 Internal Server Error Problems on Your Own Site" });</span>
   }
 }
@@ -181,7 +181,7 @@ module.exports = errorHandler;
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2023-03-06T07:07:57.925Z
+                at 2023-03-07T03:02:07.820Z
             </div>
         <script src="../../prettify.js"></script>
         <script>

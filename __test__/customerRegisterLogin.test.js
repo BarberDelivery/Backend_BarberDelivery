@@ -128,7 +128,6 @@ describe.skip("API customer", () => {
   describe("POST /customer/login", () => {
     it("should login and response 200", async () => {
       const customerLoginData = {
-        username: "erwin",
         email: "erwin@gmail.com",
         password: "12345678",
       };
@@ -138,20 +137,6 @@ describe.skip("API customer", () => {
       expect(response.status).toBe(200);
       expect(response.body).toHaveProperty("access_token", expect.any(String));
       expect(response.body).toHaveProperty("sendUsernameForClient", expect.any(String));
-    });
-
-    // Username Invalid
-    it("should login and response 200", async () => {
-      const customerLoginData = {
-        username: "erwin2",
-        email: "erwin@gmail.com",
-        password: "12345678",
-      };
-
-      const response = await request(app).post("/customer/login").send(customerLoginData);
-
-      expect(response.status).toBe(401);
-      expect(response.body.message).toBe("Email/Password Invalid");
     });
 
     // Email Invalid
@@ -180,6 +165,32 @@ describe.skip("API customer", () => {
 
       expect(response.status).toBe(401);
       expect(response.body.message).toBe("Email/Password Invalid");
+    });
+
+    // Email null
+    it("should login and response 200", async () => {
+      const barberLoginData = {
+        username: "alfian",
+        password: "12345678",
+      };
+
+      const response = await request(app).post("/customer/login").send(barberLoginData);
+
+      expect(response.status).toBe(401);
+      expect(response.body.message).toBe("Email Required");
+    });
+
+    // Password null
+    it("should login and response 200", async () => {
+      const barberLoginData = {
+        username: "alfian",
+        email: "alfian@gmail.com",
+      };
+
+      const response = await request(app).post("/customer/login").send(barberLoginData);
+
+      expect(response.status).toBe(401);
+      expect(response.body.message).toBe("Password Required");
     });
   });
 });
