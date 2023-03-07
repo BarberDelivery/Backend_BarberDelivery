@@ -1,12 +1,4 @@
-const {
-  Customer,
-  Barber,
-  Item,
-  Transaction,
-  Service,
-  ServicesTransaction,
-  Schedule,
-} = require("../models/index");
+const { Customer, Barber, Item, Transaction, Service, ServicesTransaction, Schedule } = require("../models/index");
 const distance = require("google-distance-matrix");
 const dayjs = require("dayjs");
 const utc = require("dayjs/plugin/utc");
@@ -57,16 +49,21 @@ class customerMainController {
     }
   }
 
+  static async getAllService(req, res, next) {
+    try {
+      const dataServices = await Service.findAll({
+        attributes: ["id", "name", "price"],
+      });
+      res.status(200).json(dataServices);
+    } catch (err) {
+      console.log(err);
+      next(err);
+    }
+  }
+
   static async postTransaction(req, res, next) {
     try {
-      const {
-        BarberId,
-        priceBarber,
-        date,
-        servicesId,
-        longLatCustomer,
-        longLatBarber,
-      } = req.body;
+      const { BarberId, priceBarber, date, servicesId, longLatCustomer, longLatBarber } = req.body;
 
       // let loopFindService = [];
 
@@ -74,7 +71,7 @@ class customerMainController {
         CustomerId: req.customer.id,
         BarberId: BarberId,
         status: "pending",
-        cutRating: null,
+        cutRating: 0,
         totalPrice: null,
         duration: null,
         date: null,
@@ -87,9 +84,7 @@ class customerMainController {
         return { ServiceId: +el, TransactionId: firstCreateTransaction.id };
       });
 
-      const newServiceTransaction = await ServicesTransaction.bulkCreate(
-        loopingIdService
-      );
+      const newServiceTransaction = await ServicesTransaction.bulkCreate(loopingIdService);
       const getDataService = await ServicesTransaction.findAll({
         where: {
           TransactionId: newServiceTransaction[0].TransactionId,
@@ -120,10 +115,7 @@ class customerMainController {
       // Example usage with async/await:
       async function main() {
         try {
-          const distances = await getDistances(
-            [`${longLatCustomer}`],
-            [`${longLatBarber}`]
-          );
+          const distances = await getDistances([`${longLatCustomer}`], [`${longLatBarber}`]);
           return distances.rows[0].elements;
           // console.log(distances);
         } catch (err) {
@@ -133,8 +125,7 @@ class customerMainController {
 
       const resultDistance = await main();
       console.log(resultDistance, "((((((((");
-      const totalPriceDistance =
-        resultDistance[0].distance.text.split(" ")[0] * 1000;
+      const totalPriceDistance = resultDistance[0].distance.text.split(" ")[0] * 1000;
 
       // Calculation For Total Price
       const priceService = getDataService.map((el) => {
@@ -154,15 +145,13 @@ class customerMainController {
       let totalPrice;
 
       if (findCustomer.isStudent == true) {
-        totalPrice =
-          +sumArrayPrice + +priceBarber + +totalPriceDistance - 10000;
+        totalPrice = +sumArrayPrice + +priceBarber + +totalPriceDistance - 10000;
       } else {
         totalPrice = +sumArrayPrice + +priceBarber + +totalPriceDistance;
       }
 
       // Calculation For Duration
-      const totalTripDuration =
-        resultDistance[0].duration.text.split(" ")[0] * 2;
+      const totalTripDuration = resultDistance[0].duration.text.split(" ")[0] * 2;
       const durationService = getDataService.map((el) => {
         return el.Service.duration;
       });
@@ -197,7 +186,7 @@ class customerMainController {
           CustomerId: req.customer.id,
           BarberId: BarberId,
           status: "",
-          cutRating: null,
+          cutRating: 0,
           totalPrice: totalPrice,
           duration: totalDuration,
           date: dateStart,
@@ -409,6 +398,22 @@ class customerMainController {
         message: "Upload image is successful",
         data: newPath,
       });
+    } catch (err) {
+      console.log(err);
+      next(err);
+    }
+  }
+
+  static async getAllSchedule(req, res, next) {
+    try {
+      const { BarberId } = req.body;
+      const allSchedule = await Schedule.findAll({
+        where: {
+          BarberId: BarberId,
+        },
+      });
+      console.log(allSchedule);
+      res.status(200).json(allSchedule);
     } catch (err) {
       console.log(err);
       next(err);

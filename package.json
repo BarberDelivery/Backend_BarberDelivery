@@ -1,6 +1,7 @@
 {
   "dependencies": {
     "bcrypt": "^5.1.0",
+    "body-parser": "^1.20.2",
     "cloudinary": "^1.35.0",
     "cors": "^2.8.5",
     "dayjs": "^1.11.7",
@@ -24,7 +25,7 @@
   "version": "1.0.0",
   "main": "app.js",
   "scripts": {
-    "test": "jest --runInBand --forceExit --coverage"
+    "test": "jest --runInBand --forceExit --coverage --verbose"
   },
   "repository": {
     "type": "git",

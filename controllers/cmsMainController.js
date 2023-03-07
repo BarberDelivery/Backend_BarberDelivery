@@ -9,8 +9,22 @@ class CmsController {
     // res.status(201).json("Berhasil");
     try {
       const { username, email, password } = req.body;
+
+      if (!username) {
+        throw { name: "username-required" };
+      }
+
+      if (!email) {
+        throw { name: "email-required" };
+      }
+
+      if (!password) {
+        throw { name: "password-required" };
+      }
+
       const encrypPass = hash(password);
       console.log(encrypPass);
+
       const addDataAdmin = await Admin.addAdmin({
         username,
         email,
@@ -25,22 +39,8 @@ class CmsController {
       });
     } catch (err) {
       console.log(err);
-      if (err.name === "username-notNull") {
-        res.status(400).json(err.message);
-      } else if (err.name === "email-notNull") {
-        res.status(400).json(err.message);
-      }
-      if (err.name === "password-notNull") {
-        res.status(400).json(err.message);
-      }
-      if (err.name === "phoneNumber-notNull") {
-        res.status(400).json(err.message);
-      }
-      if (err.name === "address-notNull") {
-        res.status(400).json(err.message);
-      } else {
-        next(err);
-      }
+
+      next(err);
     }
   }
 
@@ -50,6 +50,9 @@ class CmsController {
       console.log(email, "<<<<<<<<<<<<<<<");
 
       const adminLogin = await Admin.getByUsernameEmail(username, email);
+      if (!username) {
+        throw { name: "username-required" };
+      }
 
       if (!adminLogin) {
         throw { name: "invalid-login" };
@@ -59,7 +62,7 @@ class CmsController {
       if (!compareResult) {
         throw { name: "invalid-login" };
       }
-
+      // console.log(adminLogin._id);
       let access_token = encodeToken({
         id: adminLogin._id,
       });
@@ -91,6 +94,16 @@ class CmsController {
   static async patchCustomerIsStudent(req, res, next) {
     try {
       const { customerId } = req.params;
+      const dataCustomer = await Customer.findOne({
+        where: {
+          id: customerId,
+        },
+      });
+      console.log(dataCustomer);
+
+      if (!dataCustomer) {
+        throw { name: "data-not-found" };
+      }
       const patchCustomer = await Customer.update(
         {
           isStudent: true,
@@ -101,7 +114,7 @@ class CmsController {
           },
         }
       );
-      res.status(201).json({ message: "Update isStudent Successfuly" });
+      res.status(200).json({ message: "Update isStudent Successfuly" });
     } catch (err) {
       console.log(err);
       next(err);
@@ -126,7 +139,7 @@ class CmsController {
           },
         });
         res.status(200).json({
-          message: `${findCustomerId.username} delete successfully`,
+          message: `Delete successfully`,
         });
       } else {
         throw { name: "data-not-found" };
@@ -212,7 +225,7 @@ class CmsController {
           returning: true,
         }
       );
-      res.status(201).json(dataEditBarber[1][0]);
+      res.status(200).json(dataEditBarber[1][0]);
     } catch (err) {
       console.log(err);
       next(err);
@@ -284,6 +297,13 @@ class CmsController {
   static async deleteCatalogueById(req, res, next) {
     try {
       const { catalogueId } = req.params;
+
+      const dataCatalogue = await Catalogue.getByCatalogueId(catalogueId);
+
+      if (!dataCatalogue) {
+        throw { name: "data-not-found" };
+      }
+
       const deleteCatalogue = await Catalogue.deleteCatalogueById(catalogueId);
 
       res.status(200).json({ message: "Delete Catalogue Successfuly" });

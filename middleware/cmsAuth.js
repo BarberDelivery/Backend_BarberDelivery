@@ -11,7 +11,7 @@ const cmsAuthentication = async (req, res, next) => {
 
     const dataToken = decodeToken(access_token);
 
-    console.log(dataToken.id);
+    console.log(dataToken.id, ">>>>>>>>>>>>");
     const dataAdmin = await Admin.getByAdminId(dataToken.id);
 
     if (!dataAdmin) {
