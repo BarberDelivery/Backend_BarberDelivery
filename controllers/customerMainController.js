@@ -136,12 +136,14 @@ class customerMainController {
           return distances.rows[0].elements;
           // console.log(distances);
         } catch (err) {
-          // console.error(err);
+          console.error(err);
         }
       }
 
       const resultDistance = await main();
       console.log(resultDistance, "((((((((");
+      // const totalPriceDistance = resultDistance[0].distance.text.split(" ")[0] * 1000;
+
       const totalPriceDistance = resultDistance[0].distance.text.split(" ")[0] * 1000;
 
       // Calculation For Total Price
@@ -225,7 +227,7 @@ class customerMainController {
         {
           CustomerId: req.customer.id,
           BarberId: BarberId,
-          status: "",
+          status: "paid",
           cutRating: 0,
           totalPrice: totalPrice,
           duration: totalDuration,
@@ -492,33 +494,11 @@ class customerMainController {
       throw { name: "data-not-found" };
     }
 
-    // console.log(getTransactionById.ServicesTransactions);
-    // let dataObj = { name: "", price: 0 };
-    // let insertItem = [];
-    // let dataInsert = getTransactionById.ServicesTransactions.map((el) => {
-    //   // console.log(el.Service.name);
-    //   dataObj.name = el.Service.name;
-    //   dataObj.price = el.Service.price;
-    //   console.log(dataObj);
-    //   insertItem.push(dataObj);
-    // });
-
     let insertItem = [];
 
     insertItem = getTransactionById.ServicesTransactions.map((el) => {
       return { name: el.Service.name, price: el.Service.price, quantity: 1 };
     });
-
-    console.log(insertItem, "<<<<<<<<<<<<<<<<<<<<<<");
-    // "external_id": "payment-link-example",
-    // "amount": 100000,
-    // "description": "Invoice Demo #123",
-    // "invoice_duration": 86400,
-    // "customer": {
-    //   "given_names": "roihan",
-    //   "surname": "s",
-    //   "email": "pro.roihan@gmail.com",
-    //   "mobile_number": "+6281224642373",
 
     try {
       const { data } = await axios({
@@ -560,8 +540,6 @@ class customerMainController {
         },
       });
 
-      // setFinish(true);
-      // console.log(data);
       res.status(200).json(data);
     } catch (err) {
       console.log(err.response.data);

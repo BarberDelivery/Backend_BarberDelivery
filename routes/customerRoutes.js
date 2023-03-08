@@ -17,6 +17,8 @@ router.post(`/success-payment`, customerMainController.successPaymentCb); // O
 router.use(customerAuthentication);
 router.get("/detail", customerMainController.getCustomerById); //O Baru
 router.post("/upload-image", upload.single("image"), customerMainController.uploadImage); //O
+router.get("/detail", customerMainController.getCustomerById); //
+
 router.get("/order/services", customerMainController.getAllService);
 router.get("/order/barber", customerMainController.getAllBarber);
 router.get("/order/barber/:barberId", customerMainController.getBarberById);
