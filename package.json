@@ -27,7 +27,7 @@
   "version": "1.0.0",
   "main": "app.js",
   "scripts": {
-    "test": "jest --runInBand --forceExit --coverage --verbose"
+    "test": "jest --runInBand --forceExit --coverage --verbose --silent"
   },
   "repository": {
     "type": "git",

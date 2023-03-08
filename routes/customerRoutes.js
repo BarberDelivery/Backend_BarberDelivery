@@ -11,11 +11,11 @@ const token_payment = "js9s8fd9sdf994ijn7ydf";
 router.post("/register", CustomerProfileController.register);
 router.post("/login", CustomerProfileController.login);
 
-router.post(`/success-payment`, customerMainController.successPaymentCb);
+router.post(`/success-payment`, customerMainController.successPaymentCb); // O
 // router.get(`failed-payment/:transactionId`, customerMainController.failedPaymentCb);
 
 router.use(customerAuthentication);
-router.get("/detail", customerMainController.getCustomerById); //O
+router.get("/detail", customerMainController.getCustomerById); //O Baru
 router.post("/upload-image", upload.single("image"), customerMainController.uploadImage); //O
 router.get("/order/services", customerMainController.getAllService);
 router.get("/order/barber", customerMainController.getAllBarber);
@@ -27,6 +27,6 @@ router.patch("/order/payment", customerMainController.successPayment);
 router.patch("/rate", customerMainController.rateBarber);
 router.get("/order/schedule", customerMainController.getAllSchedule);
 router.get("/catalogue", customerMainController.getAllCatalogue);
-router.post("/payment/:transactionId", customerMainController.paymentByCustomerId); //O
+router.post("/payment/:transactionId", customerMainController.paymentByCustomerId); //O Baru
 
 module.exports = router;

@@ -4,9 +4,11 @@ const { sequelize } = require("../models");
 const fs = require("fs");
 const { hash } = require("../helpers/bcrypt");
 const { encodeToken } = require("../helpers/jwt");
+const Cloudinary = require("cloudinary");
 // const bodyParser = require("body-parser");
 // app.use(bodyParser.raw({ type: "application/octet-stream" }));
-
+const { uploads } = require("../helpers/cloudinary");
+jest.mock("cloudinary");
 let access_token;
 
 beforeAll(async () => {
@@ -26,12 +28,9 @@ beforeAll(async () => {
   });
   await sequelize.queryInterface.bulkInsert(`Barbers`, barbersData, {});
 
-  // let transactionsData = require(`../db/transactions.json`).map((el) => {
-  //   el.createdAt = new Date();
-  //   el.updatedAt = new Date();
-  //   return el;
-  // });
-  // await sequelize.queryInterface.bulkInsert(`Transactions`, transactionsData, {});
+  access_token = encodeToken({
+    id: 1,
+  });
 
   let servicesData = require(`../db/services.json`).map((el) => {
     el.createdAt = new Date();
@@ -40,18 +39,53 @@ beforeAll(async () => {
   });
   await sequelize.queryInterface.bulkInsert(`Services`, servicesData, {});
 
-  access_token = encodeToken({
-    id: 1,
-  });
+  const customerTransactionData = {
+    BarberId: 1,
+    priceBarber: 60000,
+    date: "2023-03-07T16:20:00.000Z",
+    servicesId: [1],
+    longLatCustomer: "-6.162004679714239,106.8681513935716",
+    longLatBarber: "-6.274352505262114,106.78225871774467",
+  };
+
+  const response = await request(app).post("/customer/order/transaction").set("access_token", access_token).send(customerTransactionData);
+
+  // let transactionsData = require(`../db/transactions.json`).map((el) => {
+  //   el.createdAt = new Date();
+  //   el.updatedAt = new Date();
+  //   return el;
+  // });
+  // await sequelize.queryInterface.bulkInsert(`Transactions`, transactionsData, {});
+
+  // let servicesTranctionData = require(`../db/servicesTransactions.json`).map((el) => {
+  //   el.createdAt = new Date();
+  //   el.updatedAt = new Date();
+  //   return el;
+  // });
+  // await sequelize.queryInterface.bulkInsert(`ServicesTransactions`, servicesTranctionData, {});
+
+  // beforeAll(() => {
+  //   Cloudinary.mockImplementation(() => {
+  //     return {
+  //       upload: () => {
+  //         return new Promise((resolve) => {
+  //           resolve({
+  //             url: "fake-image.png",
+  //           });
+  //         });
+  //       },
+  //     };
+  //   });
+  // });
 });
 
 afterAll(async () => {
-  await sequelize.queryInterface.bulkDelete("Customers", null, { truncate: true, restartIdentity: true, cascade: true });
-  await sequelize.queryInterface.bulkDelete("Barbers", null, { truncate: true, restartIdentity: true, cascade: true });
+  await sequelize.queryInterface.bulkDelete("Schedules", null, { truncate: true, restartIdentity: true, cascade: true });
+  await sequelize.queryInterface.bulkDelete("ServicesTransactions", null, { truncate: true, restartIdentity: true, cascade: true });
   await sequelize.queryInterface.bulkDelete("Transactions", null, { truncate: true, restartIdentity: true, cascade: true });
   await sequelize.queryInterface.bulkDelete("Services", null, { truncate: true, restartIdentity: true, cascade: true });
-  await sequelize.queryInterface.bulkDelete("ServicesTransactions", null, { truncate: true, restartIdentity: true, cascade: true });
-  await sequelize.queryInterface.bulkDelete("Schedules", null, { truncate: true, restartIdentity: true, cascade: true });
+  await sequelize.queryInterface.bulkDelete("Customers", null, { truncate: true, restartIdentity: true, cascade: true });
+  await sequelize.queryInterface.bulkDelete("Barbers", null, { truncate: true, restartIdentity: true, cascade: true });
 });
 
 describe("API Customer", () => {
@@ -235,6 +269,30 @@ describe("API Customer", () => {
         tripPrice: expect.any(Number),
         createdAt: expect.any(String),
         updatedAt: expect.any(String),
+        Customer: expect.objectContaining({
+          id: expect.any(Number),
+          username: expect.any(String),
+          email: expect.any(String),
+          isStudent: expect.any(Boolean),
+          lastCut: expect.any(String),
+          imgDataCustomer: expect.any(String),
+          createdAt: expect.any(String),
+          updatedAt: expect.any(String),
+        }),
+        Barber: expect.objectContaining({
+          id: expect.any(Number),
+          username: expect.any(String),
+          email: expect.any(String),
+          activityStatus: expect.any(String),
+          yearOfExperience: expect.any(Number),
+          rating: expect.any(Number),
+          price: expect.any(String),
+          description: expect.any(String),
+          longLatBarber: expect.any(String),
+          profileImage: expect.any(String),
+          createdAt: expect.any(String),
+          updatedAt: expect.any(String),
+        }),
       });
     });
 
@@ -356,7 +414,7 @@ describe("API Customer", () => {
     it("should response and status 201", async () => {
       const dataRate = {
         rate: 3.8,
-        BarberId: 4,
+        BarberId: 1,
       };
 
       const response = await request(app).patch("/customer/rate").set("access_token", access_token).send(dataRate);
@@ -456,21 +514,99 @@ describe("API Customer", () => {
   });
 
   // describe("POST /customer/upload-image", () => {
+  //   beforeAll(() => {
+  //     Cloudinary.mockImplementation(() => {
+  //       return {
+  //         upload: () => {
+  //           return new Promise((resolve) => {
+  //             resolve({
+  //               url: "fake-image.png",
+  //             });
+  //           });
+  //         },
+  //       };
+  //     });
+  //   });
   //   // /customer/upload-image
   //   it("should response transaction and response 201", async () => {
   //     // const response = await request(app).post("/customer/upload-image").set("access_token", access_token);
-  //     console.log(__dirname, "<<<<<<<>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
-  //     const response = await request(app).post("/customer/upload-image").set("access_token", access_token).attach("images", `${__dirname}/test-image.jpg`);
+  //     // console.log(__dirname, "<<<<<<<>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
+
+  //     const response = await request(app).post("/customer/upload-image").set("access_token", access_token).attach("file", "Readme/test-image.jpg");
   //     expect(response.status).toBe(201);
   //     expect(response.body.message).toBe("Upload image is successful");
   //   });
 
   //   it("should response and status 401", async () => {
-  //     const response = await request(app).post("/customer/upload-image");
+  //     const response = await request(app).post("/customer/upload-image").attach("file", "Readme/test-image.jpg");
 
   //     // console.log(response.body.message, "<<<<<<<<<<<<<<<<<<<<<<<<<<<<");
   //     expect(response.status).toBe(401);
   //     expect(response.body.message).toBe("Invalid Token");
   //   });
   // });
+
+  describe("POST customer/payment/:transactionId", () => {
+    it("should response and status 200", async () => {
+      const response = await request(app).post("/customer/payment/1").set("access_token", access_token);
+      // console.log(response, "<<<<<<<<<<<<<<<<<<<<<<<<<<<<");
+      expect(response.status).toBe(200);
+      expect(response.body).toEqual({
+        id: expect.any(String),
+        external_id: expect.any(String),
+        user_id: expect.any(String),
+        status: expect.any(String),
+        items: expect.any(Array),
+        merchant_name: expect.any(String),
+        merchant_profile_picture_url: expect.any(String),
+        amount: expect.any(Number),
+        description: expect.any(String),
+        expiry_date: expect.any(String),
+        invoice_url: expect.any(String),
+        available_banks: expect.any(Array),
+        available_retail_outlets: expect.any(Array),
+        available_ewallets: expect.any(Array),
+        available_qr_codes: expect.any(Array),
+        available_direct_debits: expect.any(Array),
+        available_paylaters: expect.any(Array),
+        should_exclude_credit_card: expect.any(Boolean),
+        should_send_email: expect.any(Boolean),
+        success_redirect_url: expect.any(String),
+        failure_redirect_url: expect.any(String),
+        created: expect.any(String),
+        updated: expect.any(String),
+        currency: expect.any(String),
+        fees: expect.any(Array),
+        customer: expect.any(Object),
+        customer_notification_preference: expect.any(Object),
+      });
+    });
+
+    it("should response and status 401", async () => {
+      const response = await request(app).post("/customer/payment/1");
+
+      console.log(response.body.message, "<<<<<<<<<<<<<<<<<<<<<<<<<<<<");
+      expect(response.status).toBe(401);
+      expect(response.body.message).toBe("Invalid Token");
+    });
+  });
+
+  describe("POST /customer/success-payment", () => {
+    it("should response and status 201", async () => {
+      const tokenCallback = "NGvDBoztLU64gbSORRsbSFKks4yTdTmhDYJeQEFjwA2wQlwW";
+      const dataSend = { external_id: 1, status: "PAID" };
+      const response = await request(app).post("/customer/success-payment").send(dataSend).set("x-callback-token", tokenCallback);
+      // console.log(response, "<<<<<<<<<<<<<<<<<<<<<<<<<<<<");
+      expect(response.status).toBe(201);
+      expect(response.body.message).toBe("Payment Successfully");
+    });
+
+    it("should response and status 401", async () => {
+      const response = await request(app).post("/customer/success-payment");
+
+      console.log(response.body.message, "<<<<<<<<<<<<<<<<<<<<<<<<<<<<");
+      expect(response.status).toBe(401);
+      expect(response.body.message).toBe("Invalid Token");
+    });
+  });
 });
