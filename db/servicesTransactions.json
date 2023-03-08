@@ -2,9 +2,5 @@
   {
     "ServiceId": 1,
     "TransactionId": 1
-  },
-  {
-    "ServiceId": 2,
-    "TransactionId": 1
   }
 ]

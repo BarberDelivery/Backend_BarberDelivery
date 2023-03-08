@@ -11,32 +11,24 @@ const token_payment = "js9s8fd9sdf994ijn7ydf";
 router.post("/register", CustomerProfileController.register);
 router.post("/login", CustomerProfileController.login);
 
-router.post(`/success-payment`, customerMainController.successPaymentCb);
+router.post(`/success-payment`, customerMainController.successPaymentCb); // O
 // router.get(`failed-payment/:transactionId`, customerMainController.failedPaymentCb);
 
 router.use(customerAuthentication);
+router.get("/detail", customerMainController.getCustomerById); //O Baru
+router.post("/upload-image", upload.single("image"), customerMainController.uploadImage); //O
 router.get("/detail", customerMainController.getCustomerById); //
-router.post(
-  "/upload-image",
-  upload.single("image"),
-  customerMainController.uploadImage
-); //
+
 router.get("/order/services", customerMainController.getAllService);
 router.get("/order/barber", customerMainController.getAllBarber);
 router.get("/order/barber/:barberId", customerMainController.getBarberById);
 router.get("/order/transaction", customerMainController.getAllTransaction);
 router.post("/order/transaction", customerMainController.postTransaction);
-router.get(
-  "/order/transaction/:transactionId",
-  customerMainController.getTransactionById
-);
+router.get("/order/transaction/:transactionId", customerMainController.getTransactionById);
 router.patch("/order/payment", customerMainController.successPayment);
 router.patch("/rate", customerMainController.rateBarber);
 router.get("/order/schedule", customerMainController.getAllSchedule);
 router.get("/catalogue", customerMainController.getAllCatalogue);
-router.post(
-  "/payment/:transactionId",
-  customerMainController.paymentByCustomerId
-); 
+router.post("/payment/:transactionId", customerMainController.paymentByCustomerId); //O Baru
 
 module.exports = router;
