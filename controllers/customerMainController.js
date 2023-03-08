@@ -1,4 +1,12 @@
-const { Customer, Barber, Item, Transaction, Service, ServicesTransaction, Schedule } = require("../models/index");
+const {
+  Customer,
+  Barber,
+  Item,
+  Transaction,
+  Service,
+  ServicesTransaction,
+  Schedule,
+} = require("../models/index");
 const distance = require("google-distance-matrix");
 const dayjs = require("dayjs");
 const utc = require("dayjs/plugin/utc");
@@ -80,7 +88,14 @@ class customerMainController {
 
   static async postTransaction(req, res, next) {
     try {
-      const { BarberId, priceBarber, date, servicesId, longLatCustomer, longLatBarber } = req.body;
+      const {
+        BarberId,
+        priceBarber,
+        date,
+        servicesId,
+        longLatCustomer,
+        longLatBarber,
+      } = req.body;
 
       // let loopFindService = [];
 
@@ -95,21 +110,30 @@ class customerMainController {
         longLatCustomer: "",
       });
 
-      let loopingIdService = [];
+      let getDataService = [];
+      let newServiceTransaction;
+      if (servicesId.length) {
+        console.log("MASUK");
+        let loopingIdService = [];
 
-      loopingIdService = servicesId.map((el) => {
-        return { ServiceId: +el, TransactionId: firstCreateTransaction.id };
-      });
+        loopingIdService = servicesId.map((el) => {
+          return { ServiceId: +el, TransactionId: firstCreateTransaction.id };
+        });
 
-      const newServiceTransaction = await ServicesTransaction.bulkCreate(loopingIdService);
-      const getDataService = await ServicesTransaction.findAll({
-        where: {
-          TransactionId: newServiceTransaction[0].TransactionId,
-        },
-        include: {
-          model: Service,
-        },
-      });
+        newServiceTransaction = await ServicesTransaction.bulkCreate(
+          loopingIdService
+        );
+        if (servicesId.length) {
+          getDataService = await ServicesTransaction.findAll({
+            where: {
+              TransactionId: newServiceTransaction[0].TransactionId,
+            },
+            include: {
+              model: Service,
+            },
+          });
+        }
+      }
 
       // // Calculate Distance
       console.log(longLatCustomer, "Customer LongLat");
@@ -132,7 +156,10 @@ class customerMainController {
       // Example usage with async/await:
       async function main() {
         try {
-          const distances = await getDistances([`${longLatCustomer}`], [`${longLatBarber}`]);
+          const distances = await getDistances(
+            [`${longLatCustomer}`],
+            [`${longLatBarber}`]
+          );
           return distances.rows[0].elements;
           // console.log(distances);
         } catch (err) {
@@ -144,16 +171,23 @@ class customerMainController {
       console.log(resultDistance, "((((((((");
       // const totalPriceDistance = resultDistance[0].distance.text.split(" ")[0] * 1000;
 
-      const totalPriceDistance = resultDistance[0].distance.text.split(" ")[0] * 1000;
+      const totalPriceDistance =
+        resultDistance[0].distance.text.split(" ")[0] * 1000;
 
-      // Calculation For Total Price
-      const priceService = getDataService.map((el) => {
-        return el.Service.price;
-      });
-
-      let sumArrayPrice = priceService.reduce(function (a, b) {
-        return a + b;
-      }, 0);
+      // Calculation For Total
+      let priceService = [];
+      if (getDataService.length) {
+        console.log("masuk");
+        priceService = getDataService.map((el) => {
+          return el.Service.price;
+        });
+      }
+      let sumArrayPrice = totalPriceDistance;
+      if (priceService.length) {
+        sumArrayPrice = priceService.reduce(function (a, b) {
+          return a + b;
+        }, 0);
+      }
 
       const findCustomer = await Customer.findOne({
         where: {
@@ -164,13 +198,15 @@ class customerMainController {
       let totalPrice;
 
       if (findCustomer.isStudent == true) {
-        totalPrice = +sumArrayPrice + +priceBarber + +totalPriceDistance - 10000;
+        totalPrice =
+          +sumArrayPrice + +priceBarber + +totalPriceDistance - 10000;
       } else {
         totalPrice = +sumArrayPrice + +priceBarber + +totalPriceDistance;
       }
 
       // Calculation For Duration
-      const totalTripDuration = resultDistance[0].duration.text.split(" ")[0] * 2;
+      const totalTripDuration =
+        resultDistance[0].duration.text.split(" ")[0] * 2;
       const durationService = getDataService.map((el) => {
         return el.Service.duration;
       });
@@ -203,7 +239,10 @@ class customerMainController {
         let convertTimeStart = new Date(el.timeStart);
         let convertTimeEnd = new Date(el.timeEnd);
         let convertDateStart = new Date(dateStart);
-        if (convertDateStart >= convertTimeStart && convertDateStart <= convertTimeEnd) {
+        if (
+          convertDateStart >= convertTimeStart &&
+          convertDateStart <= convertTimeEnd
+        ) {
           throw { name: "date-booked" };
         }
       });
@@ -237,7 +276,7 @@ class customerMainController {
         },
         {
           where: {
-            id: getDataService[0].TransactionId,
+            id: firstCreateTransaction.id,
           },
           returning: true,
         }
@@ -505,9 +544,11 @@ class customerMainController {
         method: "POST",
         url: "https://api.xendit.co/v2/invoices",
         headers: {
-          Authorization: "Basic eG5kX2RldmVsb3BtZW50X2lCbmptS0tvQXAyNmE1RkI5S2VrVmZ2TVh5U0E5MDhnNE9VdFBOSVZYeld0dW5IendXU3JGTTM5RldOQ0Y6",
+          Authorization:
+            "Basic eG5kX2RldmVsb3BtZW50X2lCbmptS0tvQXAyNmE1RkI5S2VrVmZ2TVh5U0E5MDhnNE9VdFBOSVZYeld0dW5IendXU3JGTTM5RldOQ0Y6",
           "Content-Type": "application/json",
-          Cookie: "incap_ses_7267_2182539=g/IuKB7bunLB79SvQJLZZD97A2QAAAAAbYodfSs3YwY22cd4EYpSuQ==; nlbi_2182539=4njYCcyzmBpQlmiMNAqKSgAAAABu1mNFR3H5eOyynsWHRFRm",
+          Cookie:
+            "incap_ses_7267_2182539=g/IuKB7bunLB79SvQJLZZD97A2QAAAAAbYodfSs3YwY22cd4EYpSuQ==; nlbi_2182539=4njYCcyzmBpQlmiMNAqKSgAAAABu1mNFR3H5eOyynsWHRFRm",
         },
         data: {
           external_id: transactionId,
