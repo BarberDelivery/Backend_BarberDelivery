@@ -10,32 +10,32 @@ class CmsController {
     try {
       const { username, email, password } = req.body;
 
-      if (!username) {
-        throw { name: "username-required" };
-      }
+      // if (!username) {
+      //   throw { name: "username-required" };
+      // }
 
-      if (!email) {
-        throw { name: "email-required" };
-      }
+      // if (!email) {
+      //   throw { name: "email-required" };
+      // }
 
-      if (!password) {
-        throw { name: "password-required" };
-      }
+      // if (!password) {
+      //   throw { name: "password-required" };
+      // }
 
-      const encrypPass = hash(password);
-      console.log(encrypPass);
+      // const encrypPass = hash(password);
+      // console.log(encrypPass);
 
       const addDataAdmin = await Admin.addAdmin({
         username,
         email,
-        password: encrypPass,
+        password,
       });
 
       res.status(201).json({
         _id: addDataAdmin.insertedId,
         username,
         email,
-        encrypPass,
+        password,
       });
     } catch (err) {
       console.log(err);
@@ -286,11 +286,8 @@ class CmsController {
       });
     } catch (err) {
       console.log(err);
-      if (err.name === "image-notNull") {
-        res.status(400).json(err.message);
-      } else {
-        next(err);
-      }
+
+      next(err);
     }
   }
 

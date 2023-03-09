@@ -1,38 +1,62 @@
 [
   {
-    "username": "yanto",
-    "email": "yanto@gmail.com",
+    "username": "imanhairdnes",
+    "email": "imanhairdnes@gmail.com",
     "password": "12345678",
-    "activityStatus": "Cutting",
+    "activityStatus": "standby",
     "yearOfExperience": 9,
     "rating": 4.5,
-    "price": 60000,
-    "description": "Look amazing with treatments from Dex Barber. Pamper yourself with various services such as haircuts and styling. Receive a better grooming experience that suits your style from professional barbers. Get your hair professionally groomed and enjoy your day with more confidence!",
-    "longLatBarber": "-6.274352505262114,106.78225871774467",
-    "profileImage": "https://i.pinimg.com/564x/f6/b4/68/f6b4681177b48884aea65bcee09bdd2a.jpg"
+    "price": 120000,
+    "description": "Iman Taufiq has the latest hair shaving skills. The Korean model hairstyle is very good at it. Iman has a very long experience, until finally he became a professional in Korean haircuts",
+    "longLatBarber": "-6.26446746887177,106.79881572829885",
+    "profileImage": "https://drive.google.com/file/d/14gwrio8VUYNc8DhazhrU7UJhGHKXnwa6/view?usp=share_link"
   },
   {
-    "username": "alfian",
-    "email": "alfian@gmail.com",
+    "username": "jule",
+    "email": "jule@gmail.com",
     "password": "12345678",
     "activityStatus": "standby",
-    "yearOfExperience": 1,
-    "rating": 3.8,
-    "price": 25000,
-    "description": "Spice up your look today ",
-    "longLatBarber": "-6.274352505262114,106.78225871774467",
-    "profileImage": "https://i.pinimg.com/564x/f6/b4/68/f6b4681177b48884aea65bcee09bdd2a.jpg"
+    "yearOfExperience": 7,
+    "rating": 4.2,
+    "price": 110000,
+    "description": "Jule is a big fan of old school haircuts, he is an expert in 90s youth cuts, his favorite is the spike",
+    "longLatBarber": "-6.239557938637077,106.78322929359284",
+    "profileImage": "https://drive.google.com/file/d/1JaCCMqw4TYitIN_SX0whFu23aoaMV03w/view?usp=share_link"
   },
   {
-    "username": "ghazi",
-    "email": "ghazi@gmail.com",
+    "username": "ivanGunawan",
+    "email": "ivanGunawan@gmail.com",
     "password": "12345678",
     "activityStatus": "standby",
-    "yearOfExperience": 1,
-    "rating": 4.8,
-    "price": 25000,
-    "description": " The Dex Barber we got you covered. ",
-    "longLatBarber": "-6.274352505262114,106.78225871774467",
-    "profileImage": "https://i.pinimg.com/564x/f6/b4/68/f6b4681177b48884aea65bcee09bdd2a.jpg"
+    "yearOfExperience": 12,
+    "rating": 4.9,
+    "price": 200000,
+    "description": "One of the masters in our hair cut studio, ivan is an expert in european haircuts. His long experience makes his customers really favorite him when they want to cut their hair",
+    "longLatBarber": "-6.274567897291583,106.78261508959365",
+    "profileImage": "https://drive.google.com/file/d/1SQ8g4bkkh5lgLSYu_cd2u2HETpvpIIEl/view?usp=share_link"
+  },
+  {
+    "username": "rudy",
+    "email": "rudy@gmail.com",
+    "password": "12345678",
+    "activityStatus": "standby",
+    "yearOfExperience": 10,
+    "rating": 4.1,
+    "price": 140000,
+    "description": "Rudy is an expert in the undercut type, even though he is no longer young, he still has a young soul. Many teenagers include it in their favorite list",
+    "longLatBarber": "-6.249253017815207,106.79588869984771",
+    "profileImage": "https://drive.google.com/file/d/1lz4OQGvalrZpV7eNOgRZ4DHEVCYEEq95/view?usp=share_link"
+  },
+  {
+    "username": "rezaRahadian",
+    "email": "rezaRahadian@gmail.com",
+    "password": "12345678",
+    "activityStatus": "standby",
+    "yearOfExperience": 9,
+    "rating": 4.4,
+    "price": 190000,
+    "description": "A barber who is an expert in this art is very fond of acting. For him, haircut is an art that must be done with heart",
+    "longLatBarber": "-6.245273531871275,106.79448822758316",
+    "profileImage": "https://drive.google.com/file/d/1qoG5YXy14H7umpt7owlvhQUsJxKipTNF/view?usp=share_link"
   }
 ]

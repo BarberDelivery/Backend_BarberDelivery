@@ -1,5 +1,6 @@
 const { ObjectId } = require("mongodb");
 const { getDatabase } = require("../configMongodb/mongoConnection");
+const { hash } = require("../helpers/bcrypt");
 
 class Admin {
   static getCollections() {
@@ -10,9 +11,6 @@ class Admin {
 
   static async addAdmin(admin) {
     try {
-      if (!admin.username) {
-        throw { name: "username-notNull", message: { message: "username is required" } };
-      }
       if (!admin.email) {
         throw { name: "email-notNull", message: { message: "email is required" } };
       }
@@ -23,7 +21,7 @@ class Admin {
       return this.getCollections().insertOne({
         username: admin.username,
         email: admin.email,
-        password: admin.password,
+        password: hash(admin.password),
       });
     } catch (err) {
       throw err;

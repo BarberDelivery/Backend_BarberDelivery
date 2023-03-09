@@ -5,6 +5,12 @@ function errorHandler(err, req, res, next) {
     res.status(401).json({ message: "Email Required" });
   } else if (err.name === "password-required") {
     res.status(401).json({ message: "Password Required" });
+  } else if (err.name === "email-notNull") {
+    res.status(401).json(err.message);
+  } else if (err.name === "password-notNull") {
+    res.status(401).json(err.message);
+  } else if (err.name === "image-notNull") {
+    res.status(400).json(err.message);
   } else if (err.name === "SequelizeValidationError") {
     let errorData = err.errors.map((el) => {
       return el.message;
@@ -30,11 +36,9 @@ function errorHandler(err, req, res, next) {
   } else if (err.name === "invalid-token" || err.name === "JsonWebTokenError") {
     res.status(401).json({ message: "Invalid Token" });
   } else {
-    res
-      .status(500)
-      .json({
-        message: "Fixing 500 Internal Server Error Problems on Your Own Site",
-      });
+    res.status(500).json({
+      message: "Fixing 500 Internal Server Error Problems on Your Own Site",
+    });
   }
 }
 // err.message = File too big
