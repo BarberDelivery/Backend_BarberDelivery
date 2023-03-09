@@ -71,7 +71,7 @@ afterAll(async () => {
 describe("POST /barber/login", () => {
   it("should login and response 200", async () => {
     const barberLoginData = {
-      email: "alfian@gmail.com",
+      email: "imanhairdnes@gmail.com",
       password: "12345678",
     };
 
@@ -85,7 +85,7 @@ describe("POST /barber/login", () => {
   // Email Invalid
   it("should login and response 200", async () => {
     const barberLoginData = {
-      username: "alfian",
+      username: "imanhairdnes",
       email: "er@gmail.com",
       password: "12345678",
     };
@@ -99,8 +99,8 @@ describe("POST /barber/login", () => {
   // Password Invalid
   it("should login and response 200", async () => {
     const barberLoginData = {
-      username: "alfian",
-      email: "alfian@gmail.com",
+      username: "imanhairdnes",
+      email: "imanhairdnes@gmail.com",
       password: "12345",
     };
 
@@ -113,7 +113,7 @@ describe("POST /barber/login", () => {
   // Email null
   it("should login and response 200", async () => {
     const barberLoginData = {
-      username: "alfian",
+      username: "imanhairdnes",
       password: "12345678",
     };
 
@@ -127,8 +127,8 @@ describe("POST /barber/login", () => {
   it("should login and response 200", async () => {
     jest.setTimeout(30000);
     const barberLoginData = {
-      username: "alfian",
-      email: "alfian@gmail.com",
+      username: "imanhairdnes",
+      email: "imanhairdnes@gmail.com",
     };
 
     const response = await request(app).post("/barber/login").send(barberLoginData);

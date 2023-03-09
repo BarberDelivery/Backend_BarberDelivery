@@ -3,6 +3,7 @@ const request = require("supertest");
 const { sequelize } = require("../../models");
 
 afterAll(async () => {
+  jest.setTimeout(30000);
   await sequelize.queryInterface.bulkDelete("ServicesTransactions", null, { truncate: true, restartIdentity: true, cascade: true });
   await sequelize.queryInterface.bulkDelete("Schedules", null, { truncate: true, restartIdentity: true, cascade: true });
   await sequelize.queryInterface.bulkDelete("Services", null, { truncate: true, restartIdentity: true, cascade: true });
