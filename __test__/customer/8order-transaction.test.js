@@ -99,6 +99,42 @@ describe("POST /customer/order/transaction", () => {
     expect(response.body).toHaveProperty("updatedAt");
   });
 
+  it("should response transaction and response 201", async () => {
+    const customerTransactionData = {
+      BarberId: 1,
+      priceBarber: 60000,
+      date: "2023-03-08T16:20:00.000Z",
+      servicesId: [1],
+      longLatCustomer: "-6.162004679714239,106.8681513935716",
+      longLatBarber: "-6.274352505262114,106.78225871774467",
+    };
+
+    console.log(customerTransactionData, "--------------------------");
+    const response = await request(app).post("/customer/order/transaction").set("access_token", access_token).send(customerTransactionData);
+    console.log(response.body, "+++++++++++++++++++++++++++");
+
+    expect(response.status).toBe(400);
+    expect(response.body.message).toBe("Date Invalid");
+  });
+
+  it("should response transaction and response 201", async () => {
+    const customerTransactionData = {
+      BarberId: 1,
+      priceBarber: 60000,
+      date: "2023-03-12T16:20:00.000Z",
+      servicesId: [1],
+      longLatCustomer: "-6.162004679714239,106.8681513935716",
+      longLatBarber: "-6.274352505262114,106.78225871774467",
+    };
+
+    console.log(customerTransactionData, "--------------------------");
+    const response = await request(app).post("/customer/order/transaction").set("access_token", access_token).send(customerTransactionData);
+    console.log(response.body, "+++++++++++++++++++++++++++");
+
+    expect(response.status).toBe(400);
+    expect(response.body.message).toBe("This date has been booked");
+  });
+
   it("should response and status 401", async () => {
     const response = await request(app).post("/customer/order/transaction");
 

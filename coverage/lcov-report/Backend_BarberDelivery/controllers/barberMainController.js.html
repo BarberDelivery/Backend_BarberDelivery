@@ -23,16 +23,16 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">79.1% </span>
+                <span class="strong">88.05% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>53/67</span>
+                <span class='fraction'>59/67</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">68.75% </span>
+                <span class="strong">87.5% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>11/16</span>
+                <span class='fraction'>14/16</span>
             </div>
         
             
@@ -44,9 +44,9 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">79.1% </span>
+                <span class="strong">88.05% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>53/67</span>
+                <span class='fraction'>59/67</span>
             </div>
         
             
@@ -61,7 +61,7 @@
             </div>
         </template>
     </div>
-    <div class='status-line medium'></div>
+    <div class='status-line high'></div>
     <pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
@@ -310,29 +310,29 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">5x</span>
-<span class="cline-any cline-yes">5x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">4x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -531,23 +531,23 @@ class barberMainController {
         },
       });
 &nbsp;
-      <span class="missing-if-branch" title="else path not taken" >E</span>if (!barberLogin) {
+      if (!barberLogin) {
         throw { name: "invalid-login" };
       }
 &nbsp;
-      let barberResult = <span class="cstat-no" title="statement not covered" >await compare(password, barberLogin.password);</span>
-<span class="cstat-no" title="statement not covered" >      if (!barberResult) {</span>
-<span class="cstat-no" title="statement not covered" >        throw { name: "invalid-login" };</span>
+      let barberResult = await compare(password, barberLogin.password);
+      if (!barberResult) {
+        throw { name: "invalid-login" };
       }
 &nbsp;
       // const { id } = customerLogin;
-      let access_token = <span class="cstat-no" title="statement not covered" >encodeToken({</span>
+      let access_token = encodeToken({
         id: barberLogin.id,
       });
       // console.log(token);
-      let sendUsernameForBarber = <span class="cstat-no" title="statement not covered" >barberLogin.username;</span>
+      let sendUsernameForBarber = barberLogin.username;
 &nbsp;
-<span class="cstat-no" title="statement not covered" >      res.status(200).json({</span>
+      res.status(200).json({
         access_token,
         sendUsernameForBarber,
       });
@@ -736,7 +736,7 @@ module.exports = barberMainController;
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2023-03-09T05:36:14.677Z
+                at 2023-03-09T07:27:20.120Z
             </div>
         <script src="../../prettify.js"></script>
         <script>
