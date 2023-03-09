@@ -8,15 +8,9 @@ router.post("/login", barberMainController.login);
 router.use(barberAuthentication);
 router.get("/transaction", barberMainController.getAllTransaction); // Baru
 router.get("/schedule", barberMainController.getSchedule);
-router.get(
-  "/transaction/:transactionId",
-  barberMainController.getTransactionById
-); // Baru
+router.get("/transaction/:transactionId", barberMainController.getTransactionById); // Baru
 router.patch("/activitystatus", barberMainController.patchActivityStatus);
-router.patch(
-  "/transaction/:transactionId",
-  barberMainController.patchTransactionStatus
-);
+router.patch("/transaction/:transactionId", barberMainController.patchTransactionStatus);
 router.patch("/schedule/:scheduleId", barberMainController.patchSchedule);
 router.get("/barber-profile", barberMainController.getBarberById);
 

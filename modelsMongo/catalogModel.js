@@ -15,7 +15,7 @@ class Catalogue {
   static async addCatalogue(catalogue) {
     try {
       if (!catalogue.image) {
-        throw { name: "image-notNull", message: "image is required" };
+        throw { name: "image-notNull", message: { message: "image is required" } };
       }
 
       return this.getCollections().insertOne({

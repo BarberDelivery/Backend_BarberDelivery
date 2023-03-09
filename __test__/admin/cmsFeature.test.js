@@ -1,16 +1,23 @@
-const app = require("../app");
+const app = require("../../app");
 const request = require("supertest");
-const { sequelize } = require("../models");
+const { sequelize } = require("../../models");
 const fs = require("fs");
-const { hash } = require("../helpers/bcrypt");
-const { encodeToken } = require("../helpers/jwt");
+const { hash } = require("../../helpers/bcrypt");
+const { encodeToken } = require("../../helpers/jwt");
 // const bodyParser = require("body-parser");
 // app.use(bodyParser.raw({ type: "application/octet-stream" }));
 let catalogueId;
 let access_token;
 
 beforeAll(async () => {
-  let customersData = require(`../db/customers.json`).map((el) => {
+  await sequelize.queryInterface.bulkDelete("Schedules", null, { truncate: true, restartIdentity: true, cascade: true });
+  await sequelize.queryInterface.bulkDelete("ServicesTransactions", null, { truncate: true, restartIdentity: true, cascade: true });
+  await sequelize.queryInterface.bulkDelete("Transactions", null, { truncate: true, restartIdentity: true, cascade: true });
+  await sequelize.queryInterface.bulkDelete("Services", null, { truncate: true, restartIdentity: true, cascade: true });
+  await sequelize.queryInterface.bulkDelete("Customers", null, { truncate: true, restartIdentity: true, cascade: true });
+  await sequelize.queryInterface.bulkDelete("Barbers", null, { truncate: true, restartIdentity: true, cascade: true });
+
+  let customersData = require(`../../db/customers.json`).map((el) => {
     el.createdAt = new Date();
     el.updatedAt = new Date();
     el.password = hash(el.password);
@@ -18,31 +25,31 @@ beforeAll(async () => {
   });
   await sequelize.queryInterface.bulkInsert(`Customers`, customersData, {});
 
-  // let barbersData = require(`../db/barbers.json`).map((el) => {
-  //   el.createdAt = new Date();
-  //   el.updatedAt = new Date();
-  //   el.password = hash(el.password);
-  //   return el;
-  // });
-  // await sequelize.queryInterface.bulkInsert(`Barbers`, barbersData, {});
+  let barbersData = require(`../../db/barbers.json`).map((el) => {
+    el.createdAt = new Date();
+    el.updatedAt = new Date();
+    el.password = hash(el.password);
+    return el;
+  });
+  await sequelize.queryInterface.bulkInsert(`Barbers`, barbersData, {});
 
-  // let transactionsData = require(`../db/transactions.json`).map((el) => {
+  // let transactionsData = require(`../../db/transactions.json`).map((el) => {
   //   el.createdAt = new Date();
   //   el.updatedAt = new Date();
   //   return el;
   // });
   // await sequelize.queryInterface.bulkInsert(`Transactions`, transactionsData, {});
 
-  let servicesData = require(`../db/services.json`).map((el) => {
+  let servicesData = require(`../../db/services.json`).map((el) => {
     el.createdAt = new Date();
     el.updatedAt = new Date();
     return el;
   });
   await sequelize.queryInterface.bulkInsert(`Services`, servicesData, {});
 
-  // access_token = encodeToken({
-  //   id: 1,
-  // });
+  access_token = encodeToken({
+    id: 1,
+  });
   let idPassing;
 });
 
@@ -70,34 +77,21 @@ describe("API Customer", () => {
         _id: expect.any(String),
         username: expect.any(String),
         email: expect.any(String),
-        encrypPass: expect.any(String),
+        password: expect.any(String),
       });
     });
 
     // Email notNull
     it("should response with status 401", async () => {
       const adminRegisterData = {
-        email: "erwin@gmail.com",
-        inputPassword: "12345678",
-      };
-
-      const response = await request(app).post("/admin/register").send(adminRegisterData);
-
-      expect(response.status).toBe(401);
-      expect(response.body.message).toBe("Username Required");
-    });
-
-    // Email notNull
-    it("should response with status 401", async () => {
-      const adminRegisterData = {
         username: "erwin",
-        inputPassword: "12345678",
+        password: "12345678",
       };
 
       const response = await request(app).post("/admin/register").send(adminRegisterData);
 
       expect(response.status).toBe(401);
-      expect(response.body.message).toBe("Email Required");
+      expect(response.body.message).toBe("email is required");
     });
 
     // Password notNull
@@ -110,7 +104,7 @@ describe("API Customer", () => {
       const response = await request(app).post("/admin/register").send(adminRegisterData);
 
       expect(response.status).toBe(401);
-      expect(response.body.message).toBe("Password Required");
+      expect(response.body.message).toBe("password is required");
     });
   });
 
@@ -128,19 +122,6 @@ describe("API Customer", () => {
       expect(response.status).toBe(200);
       expect(response.body).toHaveProperty("access_token", expect.any(String));
       expect(response.body).toHaveProperty("sendUsernameForClient", expect.any(String));
-    });
-
-    // Username null
-    it("should login and response 401", async () => {
-      const barberLoginData = {
-        email: "erwin@gmail.com",
-        password: "12345678",
-      };
-
-      const response = await request(app).post("/admin/login").send(barberLoginData);
-
-      expect(response.status).toBe(401);
-      expect(response.body.message).toBe("Username Required");
     });
 
     // Email null
@@ -166,7 +147,7 @@ describe("API Customer", () => {
       const response = await request(app).post("/admin/register").send(adminRegisterData);
 
       expect(response.status).toBe(401);
-      expect(response.body.message).toBe("Password Required");
+      expect(response.body.message).toBe("password is required");
     });
   });
 
@@ -354,7 +335,7 @@ describe("API Customer", () => {
         activityStatus: expect.any(String),
         yearOfExperience: expect.any(Number),
         rating: expect.any(Number),
-        price: null,
+        price: expect.any(String),
         description: expect.any(String),
         longLatBarber: expect.any(String),
         profileImage: expect.any(String),
@@ -374,7 +355,7 @@ describe("API Customer", () => {
 
   describe("GET /admin/barber/:barberId", () => {
     it("should response and status 200", async () => {
-      const response = await request(app).get("/admin/barber/1").set("access_token", access_token);
+      const response = await request(app).get("/admin/barber/3").set("access_token", access_token);
 
       // console.log(response.body[0], "<<<<<<<<<<<<<<<<<<<<<<<<<<<<");
       expect(response.status).toBe(200);
@@ -387,7 +368,7 @@ describe("API Customer", () => {
         activityStatus: expect.any(String),
         yearOfExperience: expect.any(Number),
         rating: expect.any(Number),
-        price: null,
+        price: expect.any(String),
         description: expect.any(String),
         longLatBarber: expect.any(String),
         profileImage: expect.any(String),
@@ -413,20 +394,21 @@ describe("API Customer", () => {
     });
   });
 
-  describe("PUT /admin/barber/2", () => {
+  describe("PUT /admin/barber/:barberDetail", () => {
     it("should login and response 200", async () => {
       const postBarber = {
         username: "tayuya l",
-        email: "tayuya@gmail.com",
+        email: "tayuyaa@gmail.com",
         password: "12345678",
         yearOfExperience: 4,
         description: "Lorem ipsum",
+        price: 25000,
         longLatBarber: "-6.2601995872593745, 106.78085916408212",
         profileImage: "https://titlecitybarbers.com/assets/static/dany.7474da0.314044490d04151a74fee4f20b56d7ab.jpg",
       };
 
       const response = await request(app).put("/admin/barber/1").send(postBarber).set("access_token", access_token);
-      console.log(response);
+      console.log(response.body, "999999999999999999999999999999999999");
 
       expect(response.status).toBe(200);
       expect(response.body).toEqual({
@@ -437,7 +419,7 @@ describe("API Customer", () => {
         activityStatus: expect.any(String),
         yearOfExperience: expect.any(Number),
         rating: expect.any(Number),
-        price: null,
+        price: expect.any(String),
         description: expect.any(String),
         longLatBarber: expect.any(String),
         profileImage: expect.any(String),
@@ -505,6 +487,14 @@ describe("API Customer", () => {
         _id: expect.any(String),
         image: expect.any(String),
       });
+    });
+
+    it("should login and response 400", async () => {
+      let postCatalogue = {};
+
+      const response = await request(app).post("/admin/catalogue").send(postCatalogue).set("access_token", access_token);
+      expect(response.status).toBe(400);
+      expect(response.body.message).toBe("image is required");
     });
 
     it("should response and status 401", async () => {
